@@ -71,7 +71,37 @@ function appendProductToList(product, list) {
   productElement.querySelector('.js-product-description').textContent = product.description;
   productElement.querySelector('.js-product-price').textContent = `P${product.price}`;
   productElement.querySelector('.js-product-image').src = product.imageUrl;
-  productElement.querySelector('.js-product-quantity').name = `qty_${product.id}`;
+  const quantityInput = productElement.querySelector('.js-product-quantity');
+  quantityInput.name = `qty_${product.id}`;
+  
+  const decrementBtn = productElement.querySelector('.js-decrement-btn');
+  const quantityDisplay = productElement.querySelector('.js-quantity-display');
+  const addBtn = productElement.querySelector('.js-add-to-cart-btn');
+  
+  const updateDisplay = () => {
+    const value = parseInt(quantityInput.value);
+    if (value > 0) {
+      decrementBtn.style.display = 'flex';
+      quantityDisplay.style.display = 'block';
+      quantityDisplay.textContent = value;
+    } else {
+      decrementBtn.style.display = 'none';
+      quantityDisplay.style.display = 'none';
+    }
+  };
+  
+  addBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    quantityInput.value = parseInt(quantityInput.value) + 1;
+    updateDisplay();
+  });
+  
+  decrementBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const newValue = Math.max(0, parseInt(quantityInput.value) - 1);
+    quantityInput.value = newValue;
+    updateDisplay();
+  });
 
   list.appendChild(productElement);
 }

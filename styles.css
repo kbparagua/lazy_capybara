@@ -98,3 +98,72 @@
 .product-quantity[type="number"] {
   -moz-appearance: textfield;
 }
+
+.quantity-selector {
+  grid-column: 2;
+  grid-row: 4;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: end;
+}
+
+.js-decrement-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #2c7a3f;
+  background-color: #fff;
+  color: #2c7a3f;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.js-decrement-btn:hover {
+  background-color: #2c7a3f;
+  color: #fff;
+}
+
+.js-decrement-btn:active {
+  transform: scale(0.95);
+}
+
+.js-quantity-display {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  min-width: 30px;
+  text-align: center;
+}
+
+.js-add-to-cart-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #2c7a3f;
+  background-color: #fff;
+  color: #2c7a3f;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.js-add-to-cart-btn:hover {
+  background-color: #2c7a3f;
+  color: #fff;
+}
+
+.js-add-to-cart-btn:active {
+  transform: scale(0.95);
+}
