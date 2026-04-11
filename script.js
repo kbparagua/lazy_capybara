@@ -128,17 +128,24 @@ function appendProductToList(product, list) {
   const quantityDisplay = productElement.querySelector('.js-quantity-display');
   const addBtn = productElement.querySelector('.js-add-to-cart-btn');
   const unavailableText = productElement.querySelector('.js-unavailable-text');
+  const availabilityText = productElement.querySelector('.js-availability-text');
   
-  const isAvailable = product.available && product.available !== '0';
+  const availableQuantity = parseInt(product.available) || 0;
+  const isAvailable = availableQuantity > 0;
   
   if (!isAvailable) {
     addBtn.style.display = 'none';
     unavailableText.style.display = 'block';
     unavailableText.textContent = 'Out of Stock';
+    availabilityText.style.display = 'none';
+  } else {
+    availabilityText.textContent = `${availableQuantity} available`;
   }
   
   const updateDisplay = () => {
     const value = parseInt(quantityInput.value);
+    const remaining = availableQuantity - value;
+    
     if (value > 0) {
       decrementBtn.style.display = 'flex';
       quantityDisplay.style.display = 'block';
@@ -147,13 +154,31 @@ function appendProductToList(product, list) {
       decrementBtn.style.display = 'none';
       quantityDisplay.style.display = 'none';
     }
+    
+    // Update availability text and disable + button if max quantity reached
+    if (isAvailable) {
+      availabilityText.textContent = `${remaining} available`;
+      
+      if (value >= availableQuantity) {
+        addBtn.style.opacity = '0.5';
+        addBtn.style.cursor = 'not-allowed';
+        addBtn.style.pointerEvents = 'none';
+      } else {
+        addBtn.style.opacity = '1';
+        addBtn.style.cursor = 'pointer';
+        addBtn.style.pointerEvents = 'auto';
+      }
+    }
   };
   
   addBtn.addEventListener('click', (e) => {
     e.preventDefault();
     if (isAvailable) {
-      quantityInput.value = parseInt(quantityInput.value) + 1;
-      updateDisplay();
+      const currentValue = parseInt(quantityInput.value);
+      if (currentValue < availableQuantity) {
+        quantityInput.value = currentValue + 1;
+        updateDisplay();
+      }
     }
   });
   
@@ -242,7 +267,16 @@ function populateCartModal(cartItems) {
 function updateCartItemQuantity(productId, change) {
   const quantityInput = document.querySelector(`.js-product-quantity[name="qty_${productId}"]`);
   if (quantityInput) {
-    const newValue = Math.max(0, parseInt(quantityInput.value) + change);
+    const product = allProducts[productId];
+    const availableQuantity = product ? (parseInt(product.available) || 0) : 0;
+    
+    let newValue = Math.max(0, parseInt(quantityInput.value) + change);
+    
+    // Don't allow exceeding available quantity
+    if (availableQuantity > 0) {
+      newValue = Math.min(newValue, availableQuantity);
+    }
+    
     quantityInput.value = newValue;
     
     // Update the display on the product item if visible
@@ -250,6 +284,9 @@ function updateCartItemQuantity(productId, change) {
     if (productItem && productItem.offsetParent !== null) {
       const quantityDisplay = productItem.querySelector('.js-quantity-display');
       const decrementBtn = productItem.querySelector('.js-decrement-btn');
+      const addBtn = productItem.querySelector('.js-add-to-cart-btn');
+      const availabilityText = productItem.querySelector('.js-availability-text');
+      
       if (newValue > 0) {
         decrementBtn.style.display = 'flex';
         quantityDisplay.style.display = 'block';
@@ -257,6 +294,22 @@ function updateCartItemQuantity(productId, change) {
       } else {
         decrementBtn.style.display = 'none';
         quantityDisplay.style.display = 'none';
+      }
+      
+      // Update availability text and button state
+      if (availabilityText && availableQuantity > 0) {
+        const remaining = availableQuantity - newValue;
+        availabilityText.textContent = `${remaining} available`;
+        
+        if (newValue >= availableQuantity) {
+          addBtn.style.opacity = '0.5';
+          addBtn.style.cursor = 'not-allowed';
+          addBtn.style.pointerEvents = 'none';
+        } else {
+          addBtn.style.opacity = '1';
+          addBtn.style.cursor = 'pointer';
+          addBtn.style.pointerEvents = 'auto';
+        }
       }
     }
     
