@@ -1,24 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carnie's Oven - Order Form</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carnie's Oven - Order Form</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <header>
-        <h1>Carnie's Oven</h1>
-    </header>
-    <main>
-        <form id="orderForm">
-            <h2>Order Your Bakery Items</h2>
-            <div class="product-list">
-                <!-- Products will be dynamically added here via JavaScript -->
-            </div>
-            <button type="submit" class="place-order-btn">Place Order</button>
-        </form>
-    </main>
-    <script src="script.js"></script>
+  <header>
+    <h1>Carnie's Oven</h1>
+  </header>
+
+  <main>
+    <form id="orderForm">
+      <h2>Order Your Bakery Items</h2>
+      <div id="js-categories" class="categories-container">
+        <!-- Categories will be dynamically added here via JavaScript -->
+      </div>
+      <button type="submit" class="place-order-btn">Place Order</button>
+    </form>
+  </main>
+
+  <script src="script.js"></script>
+
+  <template id="js-category-template">
+    <div class="category-section">
+      <h2 class="js-category-name"></h2>
+      <div class="product-list js-product-list"></div>
+    </div>
+  </template>
+
+  <template id="js-product-template">
+    <div class="product-item">
+      <img class="js-product-image product-image" src="" alt="Product Image" />
+      <h3 class="js-product-name"></h3>
+      <p class="js-product-description"></p>
+      <p class="js-product-price"></p>
+      <input type="number" min="0" value="0" class="product-quantity">
+    </div>
+  </template>
 </body>
 </html>
