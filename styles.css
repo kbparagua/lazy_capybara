@@ -313,7 +313,7 @@
 
 .modal-item {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto 1fr;
   gap: 15px;
   padding: 15px;
   border-bottom: 1px solid #eee;
@@ -328,19 +328,57 @@
   font-size: 16px;
   font-weight: 500;
   color: #333;
+  text-align: left;
+}
+
+.modal-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.modal-item-decrement-btn,
+.modal-item-increment-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #2c7a3f;
+  background-color: #fff;
+  color: #2c7a3f;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.modal-item-decrement-btn:hover,
+.modal-item-increment-btn:hover {
+  background-color: #2c7a3f;
+  color: #fff;
+}
+
+.modal-item-decrement-btn:active,
+.modal-item-increment-btn:active {
+  transform: scale(0.95);
 }
 
 .modal-item-quantity {
   font-size: 14px;
-  color: #666;
-  min-width: 60px;
-  text-align: right;
+  font-weight: 600;
+  color: #333;
+  min-width: 30px;
+  text-align: center;
 }
 
 .modal-item-price {
   font-size: 16px;
   font-weight: 600;
   color: #2c7a3f;
-  min-width: 80px;
   text-align: right;
 }

@@ -177,10 +177,54 @@ function populateCartModal(cartItems) {
     const itemElement = template.content.cloneNode(true);
     
     itemElement.querySelector('.modal-item-name').textContent = item.name;
-    itemElement.querySelector('.modal-item-quantity').textContent = `Qty: ${item.quantity}`;
+    itemElement.querySelector('.modal-item-quantity').textContent = item.quantity;
     itemElement.querySelector('.modal-item-price').textContent = `P${(item.price * item.quantity).toFixed(2)}`;
+    
+    // Add product ID as data attribute
+    const modalItem = itemElement.querySelector('.modal-item');
+    modalItem.dataset.productId = item.id;
+    
+    // Add event listeners for increment/decrement buttons
+    const incrementBtn = itemElement.querySelector('.modal-item-increment-btn');
+    const decrementBtn = itemElement.querySelector('.modal-item-decrement-btn');
+    
+    incrementBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      updateCartItemQuantity(item.id, 1);
+    });
+    
+    decrementBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      updateCartItemQuantity(item.id, -1);
+    });
     
     modalItemsContainer.appendChild(itemElement);
   });
+}
+
+function updateCartItemQuantity(productId, change) {
+  const quantityInput = document.querySelector(`.js-product-quantity[name="qty_${productId}"]`);
+  if (quantityInput) {
+    const newValue = Math.max(0, parseInt(quantityInput.value) + change);
+    quantityInput.value = newValue;
+    
+    // Update the display on the product item if visible
+    const productItem = quantityInput.closest('.product-item');
+    if (productItem && productItem.offsetParent !== null) {
+      const quantityDisplay = productItem.querySelector('.js-quantity-display');
+      const decrementBtn = productItem.querySelector('.js-decrement-btn');
+      if (newValue > 0) {
+        decrementBtn.style.display = 'flex';
+        quantityDisplay.style.display = 'block';
+        quantityDisplay.textContent = newValue;
+      } else {
+        decrementBtn.style.display = 'none';
+        quantityDisplay.style.display = 'none';
+      }
+    }
+    
+    // Refresh the modal display
+    showCartModal();
+  }
 }
 
