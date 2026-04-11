@@ -289,6 +289,7 @@ function populateCartModal(cartItems) {
   
   if (cartItems.length === 0) {
     modalItemsContainer.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">Your basket is empty</p>';
+    updateModalSummary([]);
     return;
   }
   
@@ -320,6 +321,26 @@ function populateCartModal(cartItems) {
     
     modalItemsContainer.appendChild(itemElement);
   });
+  
+  // Update modal summary
+  updateModalSummary(cartItems);
+}
+
+function updateModalSummary(cartItems) {
+  let totalItems = 0;
+  let totalAmount = 0;
+  
+  cartItems.forEach(item => {
+    totalItems += item.quantity;
+    totalAmount += (parseFloat(item.price) || 0) * item.quantity;
+  });
+  
+  const totalItemsEl = document.getElementById('js-total-items');
+  const totalAmountEl = document.getElementById('js-total-amount');
+  
+  const itemText = totalItems === 1 ? '1 item' : `${totalItems} items`;
+  totalItemsEl.textContent = itemText;
+  totalAmountEl.textContent = `P${totalAmount.toFixed(2)}`;
 }
 
 function updateCartItemQuantity(productId, change) {

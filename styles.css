@@ -510,3 +510,43 @@
   color: #2c7a3f;
   text-align: right;
 }
+
+.modal-summary {
+  padding: 20px;
+  border-top: 2px solid #e0e0e0;
+  background-color: #f9f9f9;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  font-size: 16px;
+}
+
+.summary-row.total-amount {
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+  margin-top: 10px;
+}
+
+.summary-label {
+  color: #666;
+  font-weight: 500;
+}
+
+.summary-value {
+  font-weight: 700;
+  color: #333;
+}
+
+.summary-row.total-amount .summary-label {
+  color: #2c7a3f;
+  font-size: 18px;
+}
+
+.summary-row.total-amount .summary-value {
+  color: #2c7a3f;
+  font-size: 20px;
+}
