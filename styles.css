@@ -71,10 +71,29 @@
   text-decoration: none;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   max-width: 600px;
   width: 100%;
-  text-align: center;
+}
+
+.basket-label {
+  flex-shrink: 0;
+}
+
+.basket-separator {
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.basket-items {
+  flex-grow: 1;
+}
+
+.basket-total {
+  flex-shrink: 0;
+  font-weight: 700;
 }
 
 .basket-btn:hover {

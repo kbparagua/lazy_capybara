@@ -59,6 +59,31 @@ function updatePlaceOrderButtonState() {
   }
 }
 
+function updateBasketButton() {
+  let itemCount = 0;
+  let totalAmount = 0;
+  
+  const quantityInputs = document.querySelectorAll('.js-product-quantity');
+  quantityInputs.forEach(input => {
+    const quantity = parseInt(input.value) || 0;
+    if (quantity > 0) {
+      itemCount += quantity;
+      const productId = input.name.replace('qty_', '');
+      const product = allProducts[productId];
+      if (product) {
+        totalAmount += (parseFloat(product.price) || 0) * quantity;
+      }
+    }
+  });
+  
+  const basketItemsEl = document.querySelector('.basket-items');
+  const basketTotalEl = document.querySelector('.basket-total');
+  
+  const itemText = itemCount === 1 ? '1 item' : `${itemCount} items`;
+  basketItemsEl.textContent = itemText;
+  basketTotalEl.textContent = `P${totalAmount.toFixed(2)}`;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   loadData();
 
@@ -91,6 +116,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Initial check
     updatePlaceOrderButtonState();
+    updateBasketButton();
 });
 
 function loadProducts(rawData) {
@@ -198,6 +224,9 @@ function appendProductToList(product, list) {
     
     // Update Place Order button state
     updatePlaceOrderButtonState();
+    
+    // Update basket button
+    updateBasketButton();
   };
   
   addBtn.addEventListener('click', (e) => {
@@ -345,6 +374,7 @@ function updateCartItemQuantity(productId, change) {
     // Refresh the modal display and update button state
     showCartModal();
     updatePlaceOrderButtonState();
+    updateBasketButton();
   }
 }
 
