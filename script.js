@@ -271,11 +271,14 @@ function appendProductToList(product, list) {
   const availableQuantity = parseInt(product.available) || 0;
   const isAvailable = availableQuantity > 0;
   
+  const productItem = productElement.firstElementChild;
+  
   if (!isAvailable) {
     addBtn.style.display = 'none';
     unavailableText.style.display = 'block';
-    unavailableText.textContent = 'Out of Stock';
+    unavailableText.textContent = 'sorry, this is currently out of stock';
     availabilityText.style.display = 'none';
+    productItem.classList.add('out-of-stock');
   } else {
     availabilityText.textContent = `${availableQuantity} available`;
   }
