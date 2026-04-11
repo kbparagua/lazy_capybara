@@ -21,7 +21,29 @@
       <div id="js-categories" class="categories-container">
         <!-- Categories will be dynamically added here via JavaScript -->
       </div>
-      <button type="submit" class="place-order-btn">Place Order</button>
+
+      <a href="#" id ="view-cart-btn">My Basket</a>
+
+      <div id="js-cart-modal" class="modal" style="display: none;">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>My Basket</h2>
+            <a href="#" class="modal-close">×</a>
+          </div>
+          <div id="js-modal-items" class="modal-items">
+            <!-- Cart items will be added here -->
+          </div>
+          <div class="modal-footer">
+            <div class="customer-name-section">
+              <label for="js-customer-name">Facebook/Instagram Name</label>
+              <input type="text" id="js-customer-name" name="customer_name" class="js-customer-name" placeholder="Enter your Facebook/Instagram name" />
+              <p class="helper-text">Enter your exact Facebook/Instagram name — we'll use this to contact you about your order.</p>
+            </div>
+            <button type="submit" class="place-order-btn" disabled>Place Order</button>
+          </div>
+        </div>
+      </div>
     </form>
   </main>
 
@@ -46,6 +68,14 @@
         <span class="js-quantity-display" style="display: none;"></span>
         <a href="#" class="js-add-to-cart-btn">+</a>
       </div>
+    </div>
+  </template>
+
+  <template id="js-modal-item-template">
+    <div class="modal-item">
+      <div class="modal-item-name"></div>
+      <div class="modal-item-quantity"></div>
+      <div class="modal-item-price"></div>
     </div>
   </template>
 </body>
