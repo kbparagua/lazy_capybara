@@ -4,7 +4,7 @@ const LAZY_CAPYBARA_URL = 'https://script.google.com/macros/s/AKfycbxWJXAn5WA2Oc
 const LOAD_DATA_ACTION = 'load_data';
 const PLACE_ORDER_ACTION = 'place_order';
 
-const PRODUCT_COLUMNS = ['id', 'name', 'description', 'category', 'price', 'imageUrl'];
+const PRODUCT_COLUMNS = ['id', 'name', 'description', 'category', 'price', 'imageUrl', 'available'];
 
 let allProducts = {};
 
@@ -127,6 +127,15 @@ function appendProductToList(product, list) {
   const decrementBtn = productElement.querySelector('.js-decrement-btn');
   const quantityDisplay = productElement.querySelector('.js-quantity-display');
   const addBtn = productElement.querySelector('.js-add-to-cart-btn');
+  const unavailableText = productElement.querySelector('.js-unavailable-text');
+  
+  const isAvailable = product.available && product.available !== '0';
+  
+  if (!isAvailable) {
+    addBtn.style.display = 'none';
+    unavailableText.style.display = 'block';
+    unavailableText.textContent = 'Out of Stock';
+  }
   
   const updateDisplay = () => {
     const value = parseInt(quantityInput.value);
@@ -142,8 +151,10 @@ function appendProductToList(product, list) {
   
   addBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    quantityInput.value = parseInt(quantityInput.value) + 1;
-    updateDisplay();
+    if (isAvailable) {
+      quantityInput.value = parseInt(quantityInput.value) + 1;
+      updateDisplay();
+    }
   });
   
   decrementBtn.addEventListener('click', (e) => {

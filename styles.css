@@ -311,6 +311,20 @@
   opacity: 0.6;
 }
 
+.js-unavailable-text {
+  grid-column: 2;
+  grid-row: 4;
+  margin: 0;
+  padding: 8px 12px;
+  background-color: #ffeaea;
+  border: 1px solid #ffb3b3;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #d9534f;
+  font-weight: 500;
+  text-align: center;
+}
+
 .modal-item {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
