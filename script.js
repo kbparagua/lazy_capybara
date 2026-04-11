@@ -10,6 +10,8 @@ let allProducts = {};
 
 const CLIENT_SECRET = (new URLSearchParams(window.location.search)).get('s');
 
+const CART_STORAGE_KEY = 'lazy_capybara_cart';
+
 async function sendRequest(action, data) {
   const stringifiedData = JSON.stringify({ client_secret: CLIENT_SECRET, action, ...data });
   const response = await fetch(LAZY_CAPYBARA_URL, { method: 'POST', body: stringifiedData });
@@ -36,6 +38,39 @@ async function placeOrder(orderData) {
   const response = await sendRequest(PLACE_ORDER_ACTION, { order: orderData });
 
   return true;
+}
+
+function saveCartToLocalStorage() {
+  const cart = {};
+  const quantityInputs = document.querySelectorAll('.js-product-quantity');
+  quantityInputs.forEach(input => {
+    const quantity = parseInt(input.value) || 0;
+    if (quantity > 0) {
+      cart[input.name] = quantity;
+    }
+  });
+  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+}
+
+function loadCartFromLocalStorage() {
+  const cartData = localStorage.getItem(CART_STORAGE_KEY);
+  if (cartData) {
+    try {
+      const cart = JSON.parse(cartData);
+      const quantityInputs = document.querySelectorAll('.js-product-quantity');
+      quantityInputs.forEach(input => {
+        if (cart[input.name]) {
+          input.value = cart[input.name];
+        }
+      });
+    } catch (e) {
+      console.error('Error loading cart from localStorage:', e);
+    }
+  }
+}
+
+function clearCartFromLocalStorage() {
+  localStorage.removeItem(CART_STORAGE_KEY);
 }
 
 function isCartEmpty() {
@@ -100,6 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const success = await placeOrder(entries);
     
     if (success) {
+      clearCartFromLocalStorage();
       hideLoadingComponent();
       hideCartModal();
       showSuccessComponent();
@@ -167,6 +203,30 @@ function renderCategories(categories) {
 
     document.getElementById('js-categories').appendChild(categoryElement);
   };
+  
+  // Load cart from localStorage
+  loadCartFromLocalStorage();
+  
+  // Update all displays after loading cart
+  const quantityInputs = document.querySelectorAll('.js-product-quantity');
+  quantityInputs.forEach(input => {
+    const productItem = input.closest('.product-item');
+    if (productItem) {
+      const decrementBtn = productItem.querySelector('.js-decrement-btn');
+      const quantityDisplay = productItem.querySelector('.js-quantity-display');
+      const value = parseInt(input.value);
+      
+      if (value > 0) {
+        decrementBtn.style.display = 'flex';
+        quantityDisplay.style.display = 'block';
+        quantityDisplay.textContent = value;
+      }
+    }
+  });
+  
+  // Update basket button and form state
+  updateBasketButton();
+  updatePlaceOrderButtonState();
   
   // Hide loading component and show form and footer
   const loadingComponent = document.getElementById('js-loading-component');
@@ -239,6 +299,9 @@ function appendProductToList(product, list) {
     
     // Update basket button
     updateBasketButton();
+    
+    // Save cart to localStorage
+    saveCartToLocalStorage();
   };
   
   addBtn.addEventListener('click', (e) => {
@@ -433,6 +496,9 @@ function updateCartItemQuantity(productId, change) {
     showCartModal();
     updatePlaceOrderButtonState();
     updateBasketButton();
+    
+    // Save cart to localStorage
+    saveCartToLocalStorage();
   }
 }
 
