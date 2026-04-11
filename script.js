@@ -12,6 +12,15 @@ const CLIENT_SECRET = (new URLSearchParams(window.location.search)).get('s');
 
 const CART_STORAGE_KEY = 'lazy_capybara_cart';
 
+let loadingMessageInterval = null;
+
+const LOADING_MESSAGES = [
+  "Seeing what's fresh and ready...",
+  "Counting what's left in the pantry...",
+  "Making every treat look irresistible...",
+  "Putting on our chef's hat to prepare your order..."
+];
+
 async function sendRequest(action, data) {
   const stringifiedData = JSON.stringify({ client_secret: CLIENT_SECRET, action, ...data });
   const response = await fetch(LAZY_CAPYBARA_URL, { method: 'POST', body: stringifiedData });
@@ -24,6 +33,9 @@ async function sendRequest(action, data) {
 }
 
 async function loadData() {
+  showLoadingComponent();
+  startSequentialLoadingMessages();
+  
   const response = await sendRequest(LOAD_DATA_ACTION, {});
 
   if (response.products) {
@@ -120,14 +132,17 @@ function updateBasketButton() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  loadData();
+  showLoadingComponent();
+  startSequentialLoadingMessages();
+  await loadData();
 
   const orderForm = document.getElementById('orderForm');
   orderForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     // Show loading component
-    showLoadingComponent('Submitting your order.');
+    showLoadingComponent();
+  startSequentialLoadingMessages();
     
     const formData = new FormData(orderForm);
     const entries = Object.fromEntries(formData);
@@ -229,10 +244,9 @@ function renderCategories(categories) {
   updatePlaceOrderButtonState();
   
   // Hide loading component and show form and footer
-  const loadingComponent = document.getElementById('js-loading-component');
+  hideLoadingComponent();
   const orderForm = document.getElementById('orderForm');
   const stickyFooter = document.querySelector('.sticky-footer');
-  loadingComponent.style.display = 'none';
   orderForm.style.display = 'block';
   stickyFooter.style.display = 'flex';
 }
@@ -337,11 +351,23 @@ function hideCartModal() {
   modal.style.display = 'none';
 }
 
-function showLoadingComponent(message = 'Fetching menu...') {
+function startSequentialLoadingMessages() {
+  let messageIndex = 0;
+  const loadingText = document.querySelector('.loading-text');
+  
+  // Set initial message
+  loadingText.textContent = LOADING_MESSAGES[messageIndex];
+  
+  // Change message every 800ms
+  loadingMessageInterval = setInterval(() => {
+    messageIndex = (messageIndex + 1) % LOADING_MESSAGES.length;
+    loadingText.textContent = LOADING_MESSAGES[messageIndex];
+  }, 2000);
+}
+
+function showLoadingComponent() {
   const loadingComponent = document.getElementById('js-loading-component');
-  const loadingText = loadingComponent.querySelector('.loading-text');
   const stickyFooter = document.querySelector('.sticky-footer');
-  loadingText.textContent = message;
   loadingComponent.style.display = 'flex';
   document.getElementById('orderForm').style.display = 'none';
   document.getElementById('js-success-component').style.display = 'none';
@@ -349,6 +375,10 @@ function showLoadingComponent(message = 'Fetching menu...') {
 }
 
 function hideLoadingComponent() {
+  if (loadingMessageInterval) {
+    clearInterval(loadingMessageInterval);
+    loadingMessageInterval = null;
+  }
   const loadingComponent = document.getElementById('js-loading-component');
   loadingComponent.style.display = 'none';
 }
