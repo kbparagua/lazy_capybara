@@ -7,7 +7,26 @@ body {
   margin: 0;
   padding: 0;
   background-color: #fafafa;
-  color: #1a1a1a;
+  color: #2a2a2a;
+}
+
+main {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.category-section {
+  padding: 0 16px;
+}
+
+.js-category-name {
+  font-size: 22px;
+  font-weight: 600;
+  color: #2a2a2a;
+  margin: 24px 0 16px 0;
+  padding: 0;
+  border-bottom: 2px solid #FAD744;
+  padding-bottom: 12px;
 }
 
 .product-list {
@@ -94,7 +113,7 @@ header, h1, h2, h3 {
 
 .success-content h2 {
   font-size: 32px;
-  color: #333;
+  color: #2a2a2a;
   margin: 0;
 }
 
@@ -126,7 +145,7 @@ header, h1, h2, h3 {
   font-size: 16px;
   font-weight: 600;
   background-color: #FAD744;
-  color: #1a1a1a;
+  color: #2a2a2a;
   border: none;
   border-radius: 8px;
   text-decoration: none;
@@ -209,7 +228,7 @@ header, h1, h2, h3 {
   margin: 0 0 8px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: #2a2a2a;
   text-align: left;
 }
 
@@ -320,7 +339,7 @@ header, h1, h2, h3 {
 .js-quantity-display {
   font-size: 16px;
   font-weight: 600;
-  color: #333;
+  color: #2a2a2a;
   min-width: 30px;
   text-align: center;
 }
@@ -347,7 +366,7 @@ header, h1, h2, h3 {
 
 .js-add-to-cart-btn:hover {
   background-color: #FAD744;
-  color: #1a1a1a;
+  color: #2a2a2a;
   transform: scale(1.05);
 }
 
@@ -399,7 +418,7 @@ header, h1, h2, h3 {
 }
 
 .modal-header h2 {
-  color: #1a1a1a;
+  color: #2a2a2a;
 }
 
 .modal-header h2 {
@@ -417,7 +436,7 @@ header, h1, h2, h3 {
 }
 
 .modal-close:hover {
-  color: #333;
+  color: #2a2a2a;
 }
 
 .modal-items {
@@ -451,7 +470,7 @@ header, h1, h2, h3 {
 .customer-name-section label {
   font-size: 14px;
   font-weight: 600;
-  color: #333;
+  color: #2a2a2a;
 }
 
 .js-customer-name {
@@ -485,7 +504,7 @@ header, h1, h2, h3 {
   font-size: 16px;
   font-weight: 600;
   background: linear-gradient(135deg, #FAD744 0%, #f5c800 100%);
-  color: #1a1a1a;
+  color: #2a2a2a;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -554,7 +573,7 @@ header, h1, h2, h3 {
 .modal-item-name {
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: #2a2a2a;
   text-align: left;
 }
 
@@ -600,7 +619,7 @@ header, h1, h2, h3 {
 .modal-item-quantity {
   font-size: 14px;
   font-weight: 600;
-  color: #333;
+  color: #2a2a2a;
   min-width: 30px;
   text-align: center;
 }
@@ -639,7 +658,7 @@ header, h1, h2, h3 {
 
 .summary-value {
   font-weight: 700;
-  color: #333;
+  color: #2a2a2a;
 }
 
 .summary-row.total-amount .summary-label {
