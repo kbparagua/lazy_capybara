@@ -123,9 +123,7 @@
   align-items: center;
   justify-content: center;
   padding: 0;
-  -webkit-appearance: none;
-  appearance: none;
-  font-family: inherit;
+  text-decoration: none;
   line-height: 1;
 }
 
@@ -161,9 +159,7 @@
   align-items: center;
   justify-content: center;
   padding: 0;
-  -webkit-appearance: none;
-  appearance: none;
-  font-family: inherit;
+  text-decoration: none;
   line-height: 1;
 }
 
