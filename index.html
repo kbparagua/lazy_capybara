@@ -16,7 +16,11 @@
   </header>
 
   <main>
-    <form id="orderForm">
+    <div id="js-loading-component" class="loading-component">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Fetching menu...</p>
+    </div>
+    <form id="orderForm" style="display: none;">
       <h2>Order Your Bakery Items</h2>
       <div id="js-categories" class="categories-container">
         <!-- Categories will be dynamically added here via JavaScript -->

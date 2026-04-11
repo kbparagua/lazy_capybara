@@ -111,6 +111,12 @@ function renderCategories(categories) {
 
     document.getElementById('js-categories').appendChild(categoryElement);
   };
+  
+  // Hide loading component and show form
+  const loadingComponent = document.getElementById('js-loading-component');
+  const orderForm = document.getElementById('orderForm');
+  loadingComponent.style.display = 'none';
+  orderForm.style.display = 'block';
 }
 
 function appendProductToList(product, list) {
