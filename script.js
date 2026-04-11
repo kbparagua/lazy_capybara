@@ -1,6 +1,7 @@
 const LAZY_CAPYBARA_URL = 'https://script.google.com/macros/s/AKfycbxWJXAn5WA2OciKoZ9bgLLPWcrIMCA5G3F-Aq8HHMtlK5Ua85Bj3-EtGBxutVbVWemfZQ/exec';
 const PRODUCT_COLUMNS = ['id', 'name', 'description', 'category', 'price', 'imageUrl'];
 
+
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const clientSecret = params.get('s');
@@ -14,6 +15,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const products = data.products ? loadProducts(data.products) : [];
 
     console.log(data);
+
+    const orderForm = document.getElementById('orderForm');
+    orderForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const formData = new FormData(orderForm);
+      console.log(Object.fromEntries(formData));
+    });
 });
 
 function loadProducts(rawData) {
@@ -63,6 +71,7 @@ function appendProductToList(product, list) {
   productElement.querySelector('.js-product-description').textContent = product.description;
   productElement.querySelector('.js-product-price').textContent = `P${product.price}`;
   productElement.querySelector('.js-product-image').src = product.imageUrl;
+  productElement.querySelector('.js-product-quantity').name = `qty_${product.id}`;
 
   list.appendChild(productElement);
 }
