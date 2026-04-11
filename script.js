@@ -1,28 +1,54 @@
 const LAZY_CAPYBARA_URL = 'https://script.google.com/macros/s/AKfycbxWJXAn5WA2OciKoZ9bgLLPWcrIMCA5G3F-Aq8HHMtlK5Ua85Bj3-EtGBxutVbVWemfZQ/exec';
+
+// Supported actions
+const LOAD_DATA_ACTION = 'load_data';
+const PLACE_ORDER_ACTION = 'place_order';
+
 const PRODUCT_COLUMNS = ['id', 'name', 'description', 'category', 'price', 'imageUrl'];
 
 let allProducts = {};
 
+const CLIENT_SECRET = (new URLSearchParams(window.location.search)).get('s');
+
+async function sendRequest(action, data) {
+  const stringifiedData = JSON.stringify({ client_secret: CLIENT_SECRET, action, ...data });
+  const response = await fetch(LAZY_CAPYBARA_URL, { method: 'POST', body: stringifiedData });
+  const json = await response.json();
+
+  console.log(`response for action ${action}:`);
+  console.log(json);
+
+  return json;
+}
+
+async function loadData() {
+  const response = await sendRequest(LOAD_DATA_ACTION, {});
+
+  if (response.products) {
+    loadProducts(response.products);
+  } else {
+    console.error("Invalid response from server");
+  }
+}
+
+async function placeOrder(orderData) {
+  console.log("Placing order with data:", orderData);
+  const response = await sendRequest(PLACE_ORDER_ACTION, { order: orderData });
+
+  return true;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
-    const params = new URLSearchParams(window.location.search);
-    const clientSecret = params.get('s');
+  loadData();
 
-    const formData = JSON.stringify({ client_secret: clientSecret });
-    const response = await fetch(LAZY_CAPYBARA_URL, { method: 'POST', body: formData });
+  const orderForm = document.getElementById('orderForm');
+  orderForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(orderForm);
+    const entries = Object.fromEntries(formData);
 
-    const text = await response.text();
-    const data = JSON.parse(text);
-
-    const products = data.products ? loadProducts(data.products) : [];
-
-    console.log(data);
-
-    const orderForm = document.getElementById('orderForm');
-    orderForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const formData = new FormData(orderForm);
-      console.log(Object.fromEntries(formData));
-    });
+    await placeOrder(entries);
+  });
 
     // Add listener to My Basket button
     const viewCartBtn = document.getElementById('view-cart-btn');
