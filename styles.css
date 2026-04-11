@@ -44,6 +44,48 @@
   margin: 0;
 }
 
+/* Success Component */
+.success-component {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.success-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  background-color: #2c7a3f;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.success-content h2 {
+  font-size: 32px;
+  color: #333;
+  margin: 0;
+}
+
+.success-content p {
+  font-size: 18px;
+  color: #666;
+  margin: 0;
+}
+
 /* Sticky Footer */
 .sticky-footer {
   position: fixed;

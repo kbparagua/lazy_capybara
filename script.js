@@ -90,10 +90,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   const orderForm = document.getElementById('orderForm');
   orderForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    
+    // Show loading component
+    showLoadingComponent('Submitting your order.');
+    
     const formData = new FormData(orderForm);
     const entries = Object.fromEntries(formData);
 
-    await placeOrder(entries);
+    const success = await placeOrder(entries);
+    
+    if (success) {
+      hideLoadingComponent();
+      hideCartModal();
+      showSuccessComponent();
+    }
   });
 
     // Add listener to My Basket button
@@ -158,11 +168,13 @@ function renderCategories(categories) {
     document.getElementById('js-categories').appendChild(categoryElement);
   };
   
-  // Hide loading component and show form
+  // Hide loading component and show form and footer
   const loadingComponent = document.getElementById('js-loading-component');
   const orderForm = document.getElementById('orderForm');
+  const stickyFooter = document.querySelector('.sticky-footer');
   loadingComponent.style.display = 'none';
   orderForm.style.display = 'block';
+  stickyFooter.style.display = 'flex';
 }
 
 function appendProductToList(product, list) {
@@ -260,6 +272,31 @@ function showCartModal() {
 function hideCartModal() {
   const modal = document.getElementById('js-cart-modal');
   modal.style.display = 'none';
+}
+
+function showLoadingComponent(message = 'Fetching menu...') {
+  const loadingComponent = document.getElementById('js-loading-component');
+  const loadingText = loadingComponent.querySelector('.loading-text');
+  const stickyFooter = document.querySelector('.sticky-footer');
+  loadingText.textContent = message;
+  loadingComponent.style.display = 'flex';
+  document.getElementById('orderForm').style.display = 'none';
+  document.getElementById('js-success-component').style.display = 'none';
+  stickyFooter.style.display = 'none';
+}
+
+function hideLoadingComponent() {
+  const loadingComponent = document.getElementById('js-loading-component');
+  loadingComponent.style.display = 'none';
+}
+
+function showSuccessComponent() {
+  const successComponent = document.getElementById('js-success-component');
+  const orderForm = document.getElementById('orderForm');
+  const stickyFooter = document.querySelector('.sticky-footer');
+  orderForm.style.display = 'none';
+  stickyFooter.style.display = 'none';
+  successComponent.style.display = 'flex';
 }
 
 function getCartItems() {
