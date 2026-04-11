@@ -38,6 +38,27 @@ async function placeOrder(orderData) {
   return true;
 }
 
+function isCartEmpty() {
+  const quantityInputs = document.querySelectorAll('.js-product-quantity');
+  for (let input of quantityInputs) {
+    if (parseInt(input.value) > 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function updatePlaceOrderButtonState() {
+  const customerNameInput = document.getElementById('js-customer-name');
+  const placeOrderBtn = document.querySelector('.place-order-btn');
+  
+  if (customerNameInput && placeOrderBtn) {
+    const hasCustomerName = customerNameInput.value.trim() !== '';
+    const hasItems = !isCartEmpty();
+    placeOrderBtn.disabled = !hasCustomerName || !hasItems;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   loadData();
 
@@ -66,11 +87,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Add listener to customer name input
     const customerNameInput = document.getElementById('js-customer-name');
-    const placeOrderBtn = document.querySelector('.place-order-btn');
+    customerNameInput.addEventListener('input', updatePlaceOrderButtonState);
     
-    customerNameInput.addEventListener('input', (e) => {
-      placeOrderBtn.disabled = e.target.value.trim() === '';
-    });
+    // Initial check
+    updatePlaceOrderButtonState();
 });
 
 function loadProducts(rawData) {
@@ -175,6 +195,9 @@ function appendProductToList(product, list) {
         addBtn.style.pointerEvents = 'auto';
       }
     }
+    
+    // Update Place Order button state
+    updatePlaceOrderButtonState();
   };
   
   addBtn.addEventListener('click', (e) => {
@@ -319,8 +342,9 @@ function updateCartItemQuantity(productId, change) {
       }
     }
     
-    // Refresh the modal display
+    // Refresh the modal display and update button state
     showCartModal();
+    updatePlaceOrderButtonState();
   }
 }
 
