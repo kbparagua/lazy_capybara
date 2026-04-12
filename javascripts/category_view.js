@@ -10,7 +10,6 @@ export default class CategoryView {
     this.categoryElement = document.getElementById('js-category-template').content.cloneNode(true);
     this.categoryElement.querySelector('.js-category-name').textContent = this.category;
 
-    const productList = this.categoryElement.querySelector('.js-product-list');
     this.products.forEach(product => {
       this.#appendProductToList(product);
     });
