@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Show loading component
     showLoadingComponent();
-  startSequentialLoadingMessages();
+    startSequentialLoadingMessages();
     
     const formData = new FormData(orderForm);
     const entries = Object.fromEntries(formData);
@@ -184,80 +184,4 @@ function showSuccessComponent() {
   orderForm.style.display = 'none';
   stickyFooter.style.display = 'none';
   successComponent.style.display = 'flex';
-}
-
-function updateModalSummary(cartItems) {
-  let totalItems = 0;
-  let totalAmount = 0;
-  
-  cartItems.forEach(item => {
-    totalItems += item.quantity;
-    totalAmount += (parseFloat(item.price) || 0) * item.quantity;
-  });
-  
-  const totalItemsEl = document.getElementById('js-total-items');
-  const totalAmountEl = document.getElementById('js-total-amount');
-  
-  const itemText = totalItems === 1 ? '1 item' : `${totalItems} items`;
-  totalItemsEl.textContent = itemText;
-  totalAmountEl.textContent = `P${totalAmount.toFixed(2)}`;
-}
-
-function updateCartItemQuantity(productId, change) {
-  const quantityInput = document.querySelector(`.js-product-quantity[name="qty_${productId}"]`);
-  if (quantityInput) {
-    const product = allProducts[productId];
-    const availableQuantity = product ? (parseInt(product.available) || 0) : 0;
-    
-    let newValue = Math.max(0, parseInt(quantityInput.value) + change);
-    
-    // Don't allow exceeding available quantity
-    if (availableQuantity > 0) {
-      newValue = Math.min(newValue, availableQuantity);
-    }
-    
-    quantityInput.value = newValue;
-    
-    // Update the display on the product item if visible
-    const productItem = quantityInput.closest('.product-item');
-    if (productItem && productItem.offsetParent !== null) {
-      const quantityDisplay = productItem.querySelector('.js-quantity-display');
-      const decrementBtn = productItem.querySelector('.js-decrement-btn');
-      const addBtn = productItem.querySelector('.js-add-to-cart-btn');
-      const availabilityText = productItem.querySelector('.js-availability-text');
-      
-      if (newValue > 0) {
-        decrementBtn.style.display = 'flex';
-        quantityDisplay.style.display = 'block';
-        quantityDisplay.textContent = newValue;
-      } else {
-        decrementBtn.style.display = 'none';
-        quantityDisplay.style.display = 'none';
-      }
-      
-      // Update availability text and button state
-      if (availabilityText && availableQuantity > 0) {
-        const remaining = availableQuantity - newValue;
-        availabilityText.textContent = `${remaining} available`;
-        
-        if (newValue >= availableQuantity) {
-          addBtn.style.opacity = '0.5';
-          addBtn.style.cursor = 'not-allowed';
-          addBtn.style.pointerEvents = 'none';
-        } else {
-          addBtn.style.opacity = '1';
-          addBtn.style.cursor = 'pointer';
-          addBtn.style.pointerEvents = 'auto';
-        }
-      }
-    }
-    
-    // Refresh the modal display and update button state
-    showCartModal();
-    updatePlaceOrderButtonState();
-    updateBasketButton();
-    
-    // Save cart to localStorage
-    saveCartToLocalStorage();
-  }
 }

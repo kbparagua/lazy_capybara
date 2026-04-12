@@ -51,5 +51,24 @@ export default class BasketView {
 
       itemsContainer.appendChild(itemElement);
     });
+
+    this.#updateSummary();
+  }
+
+  #updateSummary() {
+    let totalItems = 0;
+    let totalAmount = 0;
+  
+    Basket.each((product, qty) => {
+      totalItems += qty;
+      totalAmount += (parseFloat(product.price) || 0) * qty;
+    });
+    
+    const totalItemsEl = document.getElementById('js-total-items');
+    const totalAmountEl = document.getElementById('js-total-amount');
+    
+    const itemText = totalItems === 1 ? '1 item' : `${totalItems} items`;
+    totalItemsEl.textContent = itemText;
+    totalAmountEl.textContent = `P${totalAmount.toFixed(2)}`;
   }
 }
