@@ -40,7 +40,6 @@ function renderProducts() {
     document.getElementById('js-categories').appendChild(categoryView.render());
   });
 
-  hideLoadingComponent();
   const orderForm = document.getElementById('orderForm');
   const stickyFooter = document.querySelector('.sticky-footer');
   orderForm.style.display = 'block';
