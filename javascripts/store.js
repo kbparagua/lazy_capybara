@@ -4,12 +4,7 @@ import CategoryView from './category_view.js';
 import Basket from './basket.js';
 import BasketButton from './basket_button.js';
 import BasketView from './basket_view.js';
-
-const LAZY_CAPYBARA_URL = 'https://script.google.com/macros/s/AKfycbxWJXAn5WA2OciKoZ9bgLLPWcrIMCA5G3F-Aq8HHMtlK5Ua85Bj3-EtGBxutVbVWemfZQ/exec';
-
-// Supported actions
-const PLACE_ORDER_ACTION = 'place_order';
-const CLIENT_SECRET = (new URLSearchParams(window.location.search)).get('s');
+import OrderForm from './order_form.js';
 
 let loadingMessageInterval = null;
 
@@ -22,24 +17,8 @@ const LOADING_MESSAGES = [
   "Putting on our chef's hat to prepare your order..."
 ];
 
-async function sendRequest(action, data) {
-  const stringifiedData = JSON.stringify({ client_secret: CLIENT_SECRET, action, ...data });
-  const response = await fetch(LAZY_CAPYBARA_URL, { method: 'POST', body: stringifiedData });
-  const json = await response.json();
-
-  console.log(`response for action ${action}:`);
-  console.log(json);
-
-  return json;
-}
-
-async function placeOrder(orderData) {
-  console.log("Placing order with data:", orderData);
-  const response = await sendRequest(PLACE_ORDER_ACTION, { order: orderData });
-
-  return true;
-}
 document.addEventListener('DOMContentLoaded', async () => {
+  new OrderForm();
   new BasketButton();
   new BasketView();
 
@@ -49,40 +28,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   Basket.init();
 
-  const orderForm = document.getElementById('orderForm');
-  orderForm.addEventListener('submit', async (e) => {
+  // Add listener to My Basket button
+  const viewCartBtn = document.getElementById('view-cart-btn');
+  viewCartBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    
-    // Show loading component
-    showLoadingComponent();
-    startSequentialLoadingMessages();
-    
-    const formData = new FormData(orderForm);
-    const entries = Object.fromEntries(formData);
-
-    const success = await placeOrder(entries);
-    
-    if (success) {
-      clearCartFromLocalStorage();
-      hideLoadingComponent();
-      hideCartModal();
-      showSuccessComponent();
-    }
+    showCartModal();
   });
 
-    // Add listener to My Basket button
-    const viewCartBtn = document.getElementById('view-cart-btn');
-    viewCartBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      showCartModal();
-    });
-
-    // Add close button listener
-    const modalClose = document.querySelector('.modal-close');
-    modalClose.addEventListener('click', (e) => {
-      e.preventDefault();
-      hideCartModal();
-    });
+  // Add close button listener
+  const modalClose = document.querySelector('.modal-close');
+  modalClose.addEventListener('click', (e) => {
+    e.preventDefault();
+    hideCartModal();
+  });
 });
 
 function renderProducts() {

@@ -20,7 +20,6 @@ export default class BasketView {
   
     if (Basket.count() == 0) {
       itemsContainer.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">Your basket is empty</p>';
-      // updateModalSummary([]);
       return;
     }
   
