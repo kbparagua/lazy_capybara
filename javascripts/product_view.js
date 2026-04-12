@@ -1,3 +1,7 @@
+
+const INFINITE_AVAILABILITY = -1;
+const DEFAULT_MAX_QTY = 100;
+
 export default class ProductView {
   constructor(product) {
     this.product = product;
@@ -37,18 +41,32 @@ export default class ProductView {
 
   #handleQtyControls() {
     this.#el('decrement').addEventListener('click', () => {
-      const currentQty = parseInt(this.#el('quantity').value);
-      if (currentQty > 0) this.#el('quantity').value = currentQty - 1;
-
-      this.reload();
+      if (this.#canDecrementQty()) {
+        this.#el('quantity').value = this.#currentQty() - 1;
+        this.reload();
+      }
     });
 
     this.#el('add').addEventListener('click', () => {
-      const currentQty = parseInt(this.#el('quantity').value);
-      if (currentQty < this.product.available) this.#el('quantity').value = currentQty + 1;
-
-      this.reload();
+      if (this.#canIncrementQty()) {
+        this.#el('quantity').value = this.#currentQty() + 1;
+        this.reload();
+      }
     });
+  }
+
+  #canIncrementQty() {
+    if (parseInt(this.product.available) === INFINITE_AVAILABILITY) return true;
+
+    return this.#currentQty() < this.product.available && this.#currentQty() < DEFAULT_MAX_QTY;
+  }
+
+  #canDecrementQty() {
+    return this.#currentQty() > 0;
+  }
+
+  #currentQty() {
+    return parseInt(this.#el('quantity').value);
   }
 
   #el(key) {
