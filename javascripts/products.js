@@ -1,8 +1,12 @@
 export default class Products {
-  constructor(json) {
+  constructor(json, opts = {}){
     this.products = {};
+    this.excludeOutOfStock = opts.excludeOutOfStock || false;
 
     json.forEach((product, index) => {
+      // Skip out of stock products if excludeOutOfStock is true
+      if (this.excludeOutOfStock && product.available === 0) return;
+
       // Generate a product ID
       const id = index + 1;
       this.products[id] = { id, ...product };

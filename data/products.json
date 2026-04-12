@@ -25,5 +25,14 @@
     "price": 78,
     "available": -1,
     "imageUrl": "https://126111794.cdn6.editmysite.com/uploads/1/2/6/1/126111794/TI2VKL2EAEXXFLUCH6E5BYXE.jpeg?width=2400&optimize=medium"
+  },
+    {
+    "sku": "cr-choco",
+    "name": "Chocochip",
+    "category": "Carrot Loaf",
+    "description": "lorem ipsum",
+    "price": 78,
+    "available": 0,
+    "imageUrl": "https://126111794.cdn6.editmysite.com/uploads/1/2/6/1/126111794/TI2VKL2EAEXXFLUCH6E5BYXE.jpeg?width=2400&optimize=medium"
   }
 ]

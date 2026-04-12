@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function renderProducts() {
-  const allProducts = new Products(productsJson);
+  const allProducts = new Products(productsJson, { excludeOutOfStock: true });
 
   allProducts.eachByCategory((category, products) => {
     const categoryView = new CategoryView(category, products);
