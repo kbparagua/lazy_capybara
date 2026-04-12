@@ -1,6 +1,7 @@
 import productsJson from '../data/products.json' with { type: 'json' };
 import Products from './products.js';
 import CategoryView from './category_view.js';
+import Basket from './basket.js';
 
 const LAZY_CAPYBARA_URL = 'https://script.google.com/macros/s/AKfycbxWJXAn5WA2OciKoZ9bgLLPWcrIMCA5G3F-Aq8HHMtlK5Ua85Bj3-EtGBxutVbVWemfZQ/exec';
 
@@ -123,6 +124,8 @@ function updateBasketButton() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  Basket.init();
+
   showLoadingComponent();
   startSequentialLoadingMessages();
   renderProducts();

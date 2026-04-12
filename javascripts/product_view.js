@@ -1,3 +1,4 @@
+import Basket from './basket.js';
 
 const INFINITE_AVAILABILITY = -1;
 const DEFAULT_MAX_QTY = 100;
@@ -81,6 +82,7 @@ export default class ProductView {
 
       if (this.#canDecrementQty()) {
         this.#el('quantity').value = this.#currentQty() - 1;
+        Basket.removeProduct(this.product.id);
         this.reload();
       }
     });
@@ -90,6 +92,7 @@ export default class ProductView {
 
       if (this.#canIncrementQty()) {
         this.#el('quantity').value = this.#currentQty() + 1;
+        Basket.addProduct(this.product.id);
         this.reload();
       }
     });
