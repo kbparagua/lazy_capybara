@@ -17,6 +17,7 @@ export default class ProductView {
     this.#el('image').src = this.product.imageUrl;
     this.#el('quantity').name = `qty_${this.product.id}`;
 
+    this.reload();
     this.#handleQtyControls();
 
     return this.productElement;
@@ -25,6 +26,7 @@ export default class ProductView {
   reload() {
     this.#updateQtyDisplay();
     this.#updateQtyControls();
+    this.#updateAvailabilityText();
   }
 
   #updateQtyDisplay() {
@@ -59,15 +61,33 @@ export default class ProductView {
     }
   }
 
+  #updateAvailabilityText() {
+    const available = parseInt(this.product.available);
+
+    // No need to show anything if availability is infinite or out of stock
+    if (available === INFINITE_AVAILABILITY || available === 0) return;
+
+    const availabilityText = this.#el('availabilityText');
+    const remaining = available - this.#currentQty();
+
+    availabilityText.textContent = `${remaining} available`;
+    availabilityText.style.display = 'block';
+  }
+
+
   #handleQtyControls() {
-    this.#el('decrement').addEventListener('click', () => {
+    this.#el('decrement').addEventListener('click', (e) => {
+      e.preventDefault();
+
       if (this.#canDecrementQty()) {
         this.#el('quantity').value = this.#currentQty() - 1;
         this.reload();
       }
     });
 
-    this.#el('add').addEventListener('click', () => {
+    this.#el('add').addEventListener('click', (e) => {
+      e.preventDefault();
+
       if (this.#canIncrementQty()) {
         this.#el('quantity').value = this.#currentQty() + 1;
         this.reload();
