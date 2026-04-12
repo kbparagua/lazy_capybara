@@ -8,16 +8,8 @@ import BasketView from './basket_view.js';
 const LAZY_CAPYBARA_URL = 'https://script.google.com/macros/s/AKfycbxWJXAn5WA2OciKoZ9bgLLPWcrIMCA5G3F-Aq8HHMtlK5Ua85Bj3-EtGBxutVbVWemfZQ/exec';
 
 // Supported actions
-const LOAD_DATA_ACTION = 'load_data';
 const PLACE_ORDER_ACTION = 'place_order';
-
-const PRODUCT_COLUMNS = ['id', 'name', 'description', 'category', 'price', 'imageUrl', 'available'];
-
-let allProducts = {};
-
 const CLIENT_SECRET = (new URLSearchParams(window.location.search)).get('s');
-
-const CART_STORAGE_KEY = 'lazy_capybara_cart';
 
 let loadingMessageInterval = null;
 
@@ -47,17 +39,6 @@ async function placeOrder(orderData) {
 
   return true;
 }
-
-function isCartEmpty() {
-  const quantityInputs = document.querySelectorAll('.js-product-quantity');
-  for (let input of quantityInputs) {
-    if (parseInt(input.value) > 0) {
-      return false;
-    }
-  }
-  return true;
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
   new BasketButton();
   new BasketView();
