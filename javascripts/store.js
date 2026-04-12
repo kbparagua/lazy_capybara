@@ -1,5 +1,6 @@
 import productsJson from '../data/products.json' with { type: 'json' };
 import Products from './products.js';
+import CategoryView from './category_view.js';
 
 const LAZY_CAPYBARA_URL = 'https://script.google.com/macros/s/AKfycbxWJXAn5WA2OciKoZ9bgLLPWcrIMCA5G3F-Aq8HHMtlK5Ua85Bj3-EtGBxutVbVWemfZQ/exec';
 
@@ -170,34 +171,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateBasketButton();
 });
 
-// function loadProducts() {
-//   const products = new Products(productsJson);
-//   const categories = {};
-
-//   products.each(product => {
-//     categories[product.category] = categories[product.category] || [];
-//     categories[product.category].push(product);
-//   });
-
-//   allProducts = products;
-//   console.log(categories);
-//   renderCategories(categories);
-// }
-
 function renderProducts() {
   const allProducts = new Products(productsJson);
 
   allProducts.eachByCategory((category, products) => {
-    const categoryElement = document.getElementById('js-category-template').content.cloneNode(true);
-
-    categoryElement.querySelector('.js-category-name').textContent = category;
-
-    const productList = categoryElement.querySelector('.js-product-list');
-    products.forEach(product => {
-      appendProductToList(product, productList);
-    });
-
-    document.getElementById('js-categories').appendChild(categoryElement);
+    const categoryView = new CategoryView(category, products);
+    document.getElementById('js-categories').appendChild(categoryView.render());
   });
 
   hideLoadingComponent();
