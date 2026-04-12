@@ -24,18 +24,38 @@ export default class ProductView {
 
   reload() {
     this.#updateQtyDisplay();
+    this.#updateQtyControls();
   }
 
   #updateQtyDisplay() {
     const qty = parseInt(this.#el('quantity').value);
 
     if (qty > 0) {
-      this.#el('decrement').style.display = 'flex';
       this.#el('qtyDisplay').style.display = 'block';
       this.#el('qtyDisplay').textContent = qty;
     } else {
-      this.#el('decrement').style.display = 'none';
       this.#el('qtyDisplay').style.display = 'none';
+    }
+  }
+
+  #updateQtyControls() {
+    const addBtn = this.#el('add');
+    const decrementBtn = this.#el('decrement');
+
+    if (this.#canIncrementQty()) {
+      addBtn.style.opacity = '1';
+      addBtn.style.cursor = 'pointer';
+      addBtn.style.pointerEvents = 'auto';
+    } else {
+      addBtn.style.opacity = '0.5';
+      addBtn.style.cursor = 'not-allowed';
+      addBtn.style.pointerEvents = 'none';
+    }
+
+    if (this.#canDecrementQty()) {
+      decrementBtn.style.display = 'flex';
+    } else {
+      decrementBtn.style.display = 'none';
     }
   }
 
