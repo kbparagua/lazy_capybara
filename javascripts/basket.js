@@ -6,6 +6,10 @@ export default {
     storage.products = JSON.parse(localStorage.getItem('basket')) || {};
   },
 
+  get(id) {
+    return storage.products[id] || 0;
+  },
+
   addProduct(id, qty = 1) {
     storage.products[id] = (storage.products[id] || 0) + qty;
     this.persist();

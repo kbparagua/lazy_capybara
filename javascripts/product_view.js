@@ -25,9 +25,16 @@ export default class ProductView {
   }
 
   reload() {
+    this.#syncQtyWithBasket();
+
     this.#updateQtyDisplay();
     this.#updateQtyControls();
     this.#updateAvailabilityText();
+  }
+
+  #syncQtyWithBasket() {
+    const qtyInBasket = Basket.get(this.product.id) || 0;
+    this.#el('quantity').value = qtyInBasket;
   }
 
   #updateQtyDisplay() {
@@ -81,7 +88,6 @@ export default class ProductView {
       e.preventDefault();
 
       if (this.#canDecrementQty()) {
-        this.#el('quantity').value = this.#currentQty() - 1;
         Basket.removeProduct(this.product.id);
         this.reload();
       }
@@ -91,7 +97,6 @@ export default class ProductView {
       e.preventDefault();
 
       if (this.#canIncrementQty()) {
-        this.#el('quantity').value = this.#currentQty() + 1;
         Basket.addProduct(this.product.id);
         this.reload();
       }
