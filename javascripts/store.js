@@ -3,6 +3,7 @@ import ProductRepository from './product_repository.js';
 import CategoryView from './category_view.js';
 import Basket from './basket.js';
 import BasketButton from './basket_button.js';
+import BasketView from './basket_view.js';
 
 const LAZY_CAPYBARA_URL = 'https://script.google.com/macros/s/AKfycbxWJXAn5WA2OciKoZ9bgLLPWcrIMCA5G3F-Aq8HHMtlK5Ua85Bj3-EtGBxutVbVWemfZQ/exec';
 
@@ -69,12 +70,14 @@ function updatePlaceOrderButtonState() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  Basket.init();
   new BasketButton();
+  new BasketView();
 
   showLoadingComponent();
   startSequentialLoadingMessages();
   renderProducts();
+
+  Basket.init();
 
   const orderForm = document.getElementById('orderForm');
   orderForm.addEventListener('submit', async (e) => {
@@ -133,8 +136,6 @@ function renderProducts() {
 }
   
 function showCartModal() {
-  const cartItems = getCartItems();
-  populateCartModal(cartItems);
   const modal = document.getElementById('js-cart-modal');
   modal.style.display = 'block';
 }
@@ -183,70 +184,6 @@ function showSuccessComponent() {
   orderForm.style.display = 'none';
   stickyFooter.style.display = 'none';
   successComponent.style.display = 'flex';
-}
-
-function getCartItems() {
-  const cartItems = [];
-  const quantityInputs = document.querySelectorAll('.js-product-quantity');
-  
-  quantityInputs.forEach(input => {
-    const quantity = parseInt(input.value);
-    if (quantity > 0) {
-      const productId = input.name.replace('qty_', '');
-      const product = allProducts[productId];
-      if (product) ;{
-        cartItems.push({
-          ...product,
-          quantity: quantity
-        });
-      }
-    }
-  });
-  
-  return cartItems;
-}
-
-function populateCartModal(cartItems) {
-  const modalItemsContainer = document.getElementById('js-modal-items');
-  modalItemsContainer.innerHTML = '';
-  
-  if (cartItems.length === 0) {
-    modalItemsContainer.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">Your basket is empty</p>';
-    updateModalSummary([]);
-    return;
-  }
-  
-  cartItems.forEach(item => {
-    const template = document.getElementById('js-modal-item-template');
-    const itemElement = template.content.cloneNode(true);
-    
-    itemElement.querySelector('.modal-item-name').textContent = item.name;
-    itemElement.querySelector('.modal-item-quantity').textContent = item.quantity;
-    itemElement.querySelector('.modal-item-price').textContent = `P${(item.price * item.quantity).toFixed(2)}`;
-    
-    // Add product ID as data attribute
-    const modalItem = itemElement.querySelector('.modal-item');
-    modalItem.dataset.productId = item.id;
-    
-    // Add event listeners for increment/decrement buttons
-    const incrementBtn = itemElement.querySelector('.modal-item-increment-btn');
-    const decrementBtn = itemElement.querySelector('.modal-item-decrement-btn');
-    
-    incrementBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      updateCartItemQuantity(item.id, 1);
-    });
-    
-    decrementBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      updateCartItemQuantity(item.id, -1);
-    });
-    
-    modalItemsContainer.appendChild(itemElement);
-  });
-  
-  // Update modal summary
-  updateModalSummary(cartItems);
 }
 
 function updateModalSummary(cartItems) {

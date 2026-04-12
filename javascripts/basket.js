@@ -6,10 +6,11 @@ const storage = {};
 export default {
   init() {
     storage.products = JSON.parse(localStorage.getItem('basket')) || {};
+    EventBus.dispatchEvent(new CustomEvent('basket:updated')); 
   },
 
   get(id) {
-    return storage.products[id] || 0;
+    return (storage.products || {})[id] || 0;
   },
 
   addProduct(id, qty = 1) {
@@ -41,6 +42,15 @@ export default {
       const product = ProductRepository.find(id);
       return total + (product ? product.price * qty : 0);
     }, 0);
+  },
+
+  each(callback) {
+    Object.entries(storage.products).forEach(([id, quantity]) => {
+      const product = ProductRepository.find(id);
+      if (product) {
+        callback(product, quantity);
+      }
+    });
   },
 
   persist() {

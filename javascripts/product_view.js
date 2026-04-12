@@ -1,4 +1,5 @@
 import Basket from './basket.js';
+import EventBus from './event_bus.js';
 
 const INFINITE_AVAILABILITY = -1;
 const DEFAULT_MAX_QTY = 100;
@@ -6,6 +7,7 @@ const DEFAULT_MAX_QTY = 100;
 export default class ProductView {
   constructor(product) {
     this.product = product;
+    EventBus.addEventListener('basket:updated', () => this.reload());
   }
 
   render() {
