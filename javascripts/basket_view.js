@@ -13,6 +13,8 @@ export default class BasketView {
   render() {
     console.log('update basket view');
 
+    this.#updateSummary();
+
     const itemsContainer = this.element.querySelector('#js-modal-items');
     itemsContainer.innerHTML = '';
   
@@ -55,7 +57,6 @@ export default class BasketView {
       itemsContainer.appendChild(itemElement);
     });
 
-    this.#updateSummary();
     this.#updatePlaceOrderButtonState();
   }
 
