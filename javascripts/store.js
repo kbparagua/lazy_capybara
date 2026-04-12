@@ -15,8 +15,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   new BasketView();
   new Loading();  
 
-  showLoadingComponent();
-  startSequentialLoadingMessages();
   renderProducts();
 
   Basket.init();
