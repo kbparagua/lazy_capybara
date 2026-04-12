@@ -1,5 +1,5 @@
-export default class Products {
-  constructor(json, opts = {}){
+class ProductRepository {
+  init(json, opts = {}) {
     this.products = {};
     this.excludeOutOfStock = opts.excludeOutOfStock || false;
 
@@ -39,3 +39,5 @@ export default class Products {
     return this._groupedByCategory = grouped;
   }
 }
+
+export default new ProductRepository();

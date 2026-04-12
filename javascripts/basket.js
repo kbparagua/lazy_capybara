@@ -1,10 +1,10 @@
 import EventBus from './event_bus.js';
+import ProductRepository from './product_repository.js';
 
 const storage = {};
 
 export default {
-  init(allProducts) {
-    this.allProducts = allProducts;
+  init() {
     storage.products = JSON.parse(localStorage.getItem('basket')) || {};
   },
 
@@ -38,7 +38,7 @@ export default {
 
   total() {
     return Object.entries(storage.products).reduce((total, [id, qty]) => {
-      const product = this.allProducts.find(id);
+      const product = ProductRepository.find(id);
       return total + (product ? product.price * qty : 0);
     }, 0);
   },

@@ -1,5 +1,5 @@
 import productsJson from '../data/products.json' with { type: 'json' };
-import Products from './products.js';
+import ProductRepository from './product_repository.js';
 import CategoryView from './category_view.js';
 import Basket from './basket.js';
 import BasketButton from './basket_button.js';
@@ -19,6 +19,8 @@ const CLIENT_SECRET = (new URLSearchParams(window.location.search)).get('s');
 const CART_STORAGE_KEY = 'lazy_capybara_cart';
 
 let loadingMessageInterval = null;
+
+ProductRepository.init(productsJson, { excludeOutOfStock: true });
 
 const LOADING_MESSAGES = [
   "Seeing what's fresh and ready...",
@@ -67,6 +69,7 @@ function updatePlaceOrderButtonState() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  Basket.init();
   new BasketButton();
 
   showLoadingComponent();
@@ -117,10 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function renderProducts() {
-  const allProducts = new Products(productsJson, { excludeOutOfStock: true });
-  Basket.init(allProducts);
-
-  allProducts.eachByCategory((category, products) => {
+  ProductRepository.eachByCategory((category, products) => {
     const categoryView = new CategoryView(category, products);
     document.getElementById('js-categories').appendChild(categoryView.render());
   });
@@ -194,7 +194,7 @@ function getCartItems() {
     if (quantity > 0) {
       const productId = input.name.replace('qty_', '');
       const product = allProducts[productId];
-      if (product) {
+      if (product) ;{
         cartItems.push({
           ...product,
           quantity: quantity
