@@ -1,0 +1,29 @@
+[
+  {
+    "sku": "ck-sampbox9",
+    "name": "All Flavor 9pcs Sampler Box",
+    "category": "Cookies",
+    "description": "lorem ipsum",
+    "price": 679,
+    "available": 5,
+    "imageUrl": "https://126111794.cdn6.editmysite.com/uploads/1/2/6/1/126111794/TI2VKL2EAEXXFLUCH6E5BYXE.jpeg?width=2400&optimize=medium"
+  },
+  {
+    "sku": "ck-classc",
+    "name": "Classic Chocolate Chip",
+    "category": "Cookies",
+    "description": "lorem ipsum",
+    "price": 78,
+    "available": 10,
+    "imageUrl": "https://126111794.cdn6.editmysite.com/uploads/1/2/6/1/126111794/TI2VKL2EAEXXFLUCH6E5BYXE.jpeg?width=2400&optimize=medium"
+  },
+  {
+    "sku": "cr-bscf",
+    "name": "Biscoff",
+    "category": "Carrot Loaf",
+    "description": "lorem ipsum",
+    "price": 78,
+    "available": -1,
+    "imageUrl": "https://126111794.cdn6.editmysite.com/uploads/1/2/6/1/126111794/TI2VKL2EAEXXFLUCH6E5BYXE.jpeg?width=2400&optimize=medium"
+  }
+]
