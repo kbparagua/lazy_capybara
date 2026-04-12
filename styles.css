@@ -55,6 +55,7 @@ header, h1, h2, h3 {
   align-items: center;
   min-height: 60vh;
   gap: 20px;
+  z-index: 999;
 }
 
 .loading-spinner {

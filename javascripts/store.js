@@ -5,22 +5,15 @@ import Basket from './basket.js';
 import BasketButton from './basket_button.js';
 import BasketView from './basket_view.js';
 import OrderForm from './order_form.js';
-
-let loadingMessageInterval = null;
+import Loading from './loading.js';
 
 ProductRepository.init(productsJson, { excludeOutOfStock: true });
-
-const LOADING_MESSAGES = [
-  "Seeing what's fresh and ready...",
-  "Counting what's left in the pantry...",
-  "Making every treat look irresistible...",
-  "Putting on our chef's hat to prepare your order..."
-];
 
 document.addEventListener('DOMContentLoaded', async () => {
   new OrderForm();
   new BasketButton();
   new BasketView();
+  new Loading();  
 
   showLoadingComponent();
   startSequentialLoadingMessages();
@@ -64,38 +57,6 @@ function showCartModal() {
 function hideCartModal() {
   const modal = document.getElementById('js-cart-modal');
   modal.style.display = 'none';
-}
-
-function startSequentialLoadingMessages() {
-  let messageIndex = 0;
-  const loadingText = document.querySelector('.loading-text');
-  
-  // Set initial message
-  loadingText.textContent = LOADING_MESSAGES[messageIndex];
-  
-  // Change message every 800ms
-  loadingMessageInterval = setInterval(() => {
-    messageIndex = (messageIndex + 1) % LOADING_MESSAGES.length;
-    loadingText.textContent = LOADING_MESSAGES[messageIndex];
-  }, 2000);
-}
-
-function showLoadingComponent() {
-  const loadingComponent = document.getElementById('js-loading-component');
-  const stickyFooter = document.querySelector('.sticky-footer');
-  loadingComponent.style.display = 'flex';
-  document.getElementById('orderForm').style.display = 'none';
-  document.getElementById('js-success-component').style.display = 'none';
-  stickyFooter.style.display = 'none';
-}
-
-function hideLoadingComponent() {
-  if (loadingMessageInterval) {
-    clearInterval(loadingMessageInterval);
-    loadingMessageInterval = null;
-  }
-  const loadingComponent = document.getElementById('js-loading-component');
-  loadingComponent.style.display = 'none';
 }
 
 function showSuccessComponent() {

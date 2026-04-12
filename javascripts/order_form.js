@@ -2,6 +2,8 @@ const CLIENT_SECRET = (new URLSearchParams(window.location.search)).get('s');
 const LAZY_CAPYBARA_URL = 'https://script.google.com/macros/s/AKfycbxWJXAn5WA2OciKoZ9bgLLPWcrIMCA5G3F-Aq8HHMtlK5Ua85Bj3-EtGBxutVbVWemfZQ/exec';
 const PLACE_ORDER_ACTION = 'place_order';
 
+import EventBus from './event_bus.js';
+
 export default class OrderForm {
   constructor() {
     this.element = document.getElementById('orderForm');
@@ -12,6 +14,8 @@ export default class OrderForm {
   }
 
   async #submit() {
+    EventBus.dispatchEvent(new CustomEvent('order:submit:started'));
+
     const formData = new FormData(this.element);
     const entries = Object.fromEntries(formData);
 
@@ -21,6 +25,7 @@ export default class OrderForm {
     const json = await response.json();
 
     console.log("Received response:", json);
+    EventBus.dispatchEvent(new CustomEvent('order:submit:finished'));
 
     return true;
   }
