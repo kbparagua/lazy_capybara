@@ -58,17 +58,6 @@ function isCartEmpty() {
   return true;
 }
 
-function updatePlaceOrderButtonState() {
-  const customerNameInput = document.getElementById('js-customer-name');
-  const placeOrderBtn = document.querySelector('.place-order-btn');
-  
-  if (customerNameInput && placeOrderBtn) {
-    const hasCustomerName = customerNameInput.value.trim() !== '';
-    const hasItems = !isCartEmpty();
-    placeOrderBtn.disabled = !hasCustomerName || !hasItems;
-  }
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
   new BasketButton();
   new BasketView();
@@ -113,13 +102,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       e.preventDefault();
       hideCartModal();
     });
-
-    // Add listener to customer name input
-    const customerNameInput = document.getElementById('js-customer-name');
-    customerNameInput.addEventListener('input', updatePlaceOrderButtonState);
-    
-    // Initial check
-    updatePlaceOrderButtonState();
 });
 
 function renderProducts() {

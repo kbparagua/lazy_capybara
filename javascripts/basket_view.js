@@ -4,6 +4,9 @@ import Basket from './basket.js';
 export default class BasketView {
   constructor() {
     this.element = document.getElementById('js-cart-modal');
+    this.customerNameInput = document.getElementById('js-customer-name');
+    this.customerNameInput.addEventListener('input', () => this.#updatePlaceOrderButtonState());
+
     EventBus.addEventListener('basket:updated', () => this.render());
   }
 
@@ -53,6 +56,7 @@ export default class BasketView {
     });
 
     this.#updateSummary();
+    this.#updatePlaceOrderButtonState();
   }
 
   #updateSummary() {
@@ -70,5 +74,12 @@ export default class BasketView {
     const itemText = totalItems === 1 ? '1 item' : `${totalItems} items`;
     totalItemsEl.textContent = itemText;
     totalAmountEl.textContent = `P${totalAmount.toFixed(2)}`;
+  }
+
+  #updatePlaceOrderButtonState() {
+    const placeOrderBtn = document.querySelector('.place-order-btn');
+    const customerName = this.customerNameInput.value.trim();
+  
+    placeOrderBtn.disabled = customerName === '' || Basket.count() === 0;
   }
 }
