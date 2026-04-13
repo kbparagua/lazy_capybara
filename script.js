@@ -534,4 +534,3 @@ function updateCartItemQuantity(productId, change) {
     saveCartToLocalStorage();
   }
 }
-

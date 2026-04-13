@@ -35,23 +35,19 @@ export default class BasketView {
       itemElement.querySelector('.modal-item-quantity').textContent = qty;
       itemElement.querySelector('.modal-item-price').textContent = `P${(product.price * qty).toFixed(2)}`;
       
-      // Add product ID as data attribute
-      // const modalItem = itemElement.querySelector('.modal-item');
-      // modalItem.dataset.productId = product.id;
-
       // Add event listeners for increment/decrement buttons
-      // const incrementBtn = itemElement.querySelector('.modal-item-increment-btn');
-      // const decrementBtn = itemElement.querySelector('.modal-item-decrement-btn');
+      const incrementBtn = itemElement.querySelector('.modal-item-increment-btn');
+      const decrementBtn = itemElement.querySelector('.modal-item-decrement-btn');
       
-      // incrementBtn.addEventListener('click', (e) => {
-      //   e.preventDefault();
-      //   updateCartItemQuantity(item.id, 1);
-      // });
+      incrementBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        Basket.addProduct(product.id);
+      });
       
-      // decrementBtn.addEventListener('click', (e) => {
-      //   e.preventDefault();
-      //   updateCartItemQuantity(item.id, -1);
-      // });
+      decrementBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        Basket.removeProduct(product.id);
+      });
 
       itemsContainer.appendChild(itemElement);
     });
