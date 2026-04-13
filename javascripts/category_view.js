@@ -12,8 +12,8 @@ export default class CategoryView {
     el.querySelector(selectors.categoryName).textContent = category;
 
     products.forEach(product => {
-      const productView = new ProductView(product);
-      el.querySelector(selectors.productList).appendChild(productView.render());
+      el.querySelector(selectors.productList)
+        .appendChild(ProductView.create(product));
     });
 
     return el;

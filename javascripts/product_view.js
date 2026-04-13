@@ -4,31 +4,49 @@ import EventBus from './event_bus.js';
 const INFINITE_AVAILABILITY = -1;
 const DEFAULT_MAX_QTY = 100;
 
+const selectors = {
+  template: '.js-product-template',
+  name: '.js-product-name',
+  description: '.js-product-description',
+  price: '.js-product-price',
+  image: '.js-product-image',
+  quantity: '.js-product-quantity',
+  qtyDisplay: '.js-quantity-display',
+  remove: '.js-decrement-btn',
+  add: '.js-add-to-cart-btn',
+  unavailableText: '.js-unavailable-text',
+  availabilityText: '.js-availability-text'
+};
+
 export default class ProductView {
+  static create(product) {
+    return (new ProductView(product)).render();
+  }
+
   constructor(product) {
     this.product = product;
     EventBus.addEventListener('basket:updated', () => this.reload());
   }
 
   render() {
-    const template = document.getElementById('js-product-template');
-    this.productElement = template.content.cloneNode(true);
+    const template = document.querySelector(selectors.template);
+    this.el = template.content.cloneNode(true);
+    this.els = this.#fetchElements();
 
-    this.#el('name').textContent = this.product.name;
-    this.#el('description').textContent = this.product.description;
-    this.#el('price').textContent = `P${this.product.price}`;
-    this.#el('image').src = this.product.imageUrl;
-    this.#el('quantity').name = `qty_${this.product.id}`;
+    this.els.name.textContent = this.product.name;
+    this.els.description.textContent = this.product.description;
+    this.els.price.textContent = `P${this.product.price}`;
+    this.els.image.src = this.product.imageUrl;
+    this.els.quantity.name = `qty_${this.product.id}`;
 
     this.reload();
     this.#handleQtyControls();
 
-    return this.productElement;
+    return this.el;
   }
 
   reload() {
     this.#syncQtyWithBasket();
-
     this.#updateQtyDisplay();
     this.#updateQtyControls();
     this.#updateAvailabilityText();
@@ -36,38 +54,35 @@ export default class ProductView {
 
   #syncQtyWithBasket() {
     const qtyInBasket = Basket.get(this.product.id) || 0;
-    this.#el('quantity').value = qtyInBasket;
+    this.els.quantity.value = qtyInBasket;
   }
 
   #updateQtyDisplay() {
-    const qty = parseInt(this.#el('quantity').value);
+    const currentQty = this.#currentQty();
 
-    if (qty > 0) {
-      this.#el('qtyDisplay').style.display = 'block';
-      this.#el('qtyDisplay').textContent = qty;
+    if (currentQty > 0) {
+      this.els.qtyDisplay.style.display = 'block';
+      this.els.qtyDisplay.textContent = currentQty;
     } else {
-      this.#el('qtyDisplay').style.display = 'none';
+      this.els.qtyDisplay.style.display = 'none';
     }
   }
 
   #updateQtyControls() {
-    const addBtn = this.#el('add');
-    const decrementBtn = this.#el('decrement');
-
-    if (this.#canIncrementQty()) {
-      addBtn.style.opacity = '1';
-      addBtn.style.cursor = 'pointer';
-      addBtn.style.pointerEvents = 'auto';
+    if (this.#canAdd()) {
+      this.els.addBtn.style.opacity = '1';
+      this.els.addBtn.style.cursor = 'pointer';
+      this.els.addBtn.style.pointerEvents = 'auto';
     } else {
-      addBtn.style.opacity = '0.5';
-      addBtn.style.cursor = 'not-allowed';
-      addBtn.style.pointerEvents = 'none';
+      this.els.addBtn.style.opacity = '0.5';
+      this.els.addBtn.style.cursor = 'not-allowed';
+      this.els.addBtn.style.pointerEvents = 'none';
     }
 
-    if (this.#canDecrementQty()) {
-      decrementBtn.style.display = 'flex';
+    if (this.#canRemove()) {
+      this.els.removeBtn.style.display = 'flex';
     } else {
-      decrementBtn.style.display = 'none';
+      this.els.removeBtn.style.display = 'none';
     }
   }
 
@@ -77,64 +92,58 @@ export default class ProductView {
     // No need to show anything if availability is infinite or out of stock
     if (available === INFINITE_AVAILABILITY || available === 0) return;
 
-    const availabilityText = this.#el('availabilityText');
     const remaining = available - this.#currentQty();
-
-    availabilityText.textContent = `${remaining} available`;
-    availabilityText.style.display = 'block';
+    this.els.availabilityText.textContent = `${remaining} available`;
+    this.els.availabilityText.style.display = 'block';
   }
 
 
   #handleQtyControls() {
-    this.#el('decrement').addEventListener('click', (e) => {
+    this.els.removeBtn.addEventListener('click', (e) => {
       e.preventDefault();
 
-      if (this.#canDecrementQty()) {
+      if (this.#canRemove()) {
         Basket.removeProduct(this.product.id);
         this.reload();
       }
     });
 
-    this.#el('add').addEventListener('click', (e) => {
+    this.els.addBtn.addEventListener('click', (e) => {
       e.preventDefault();
 
-      if (this.#canIncrementQty()) {
+      if (this.#canAdd()) {
         Basket.addProduct(this.product.id);
         this.reload();
       }
     });
   }
 
-  #canIncrementQty() {
+  #canAdd() {
     if (parseInt(this.product.available) === INFINITE_AVAILABILITY) return true;
 
     return this.#currentQty() < this.product.available && this.#currentQty() < DEFAULT_MAX_QTY;
   }
 
-  #canDecrementQty() {
+  #canRemove() {
     return this.#currentQty() > 0;
   }
 
   #currentQty() {
-    return parseInt(this.#el('quantity').value);
+    return parseInt(this.els.quantity.value);
   }
 
-  #el(key) {
-    if (this._elements) return this._elements[key];
-
-    this._elements = { 
-      name: this.productElement.querySelector('.js-product-name'),
-      description: this.productElement.querySelector('.js-product-description'),
-      price: this.productElement.querySelector('.js-product-price'),
-      image: this.productElement.querySelector('.js-product-image'),
-      quantity: this.productElement.querySelector('.js-product-quantity'),
-      qtyDisplay: this.productElement.querySelector('.js-quantity-display'),
-      decrement: this.productElement.querySelector('.js-decrement-btn'),
-      add: this.productElement.querySelector('.js-add-to-cart-btn'),
-      unavailableText: this.productElement.querySelector('.js-unavailable-text'),
-      availabilityText: this.productElement.querySelector('.js-availability-text'),
+  #fetchElements() {
+    return { 
+      name: this.el.querySelector(selectors.name),
+      description: this.el.querySelector(selectors.description),
+      price: this.el.querySelector(selectors.price),
+      image: this.el.querySelector(selectors.image),
+      quantity: this.el.querySelector(selectors.quantity),
+      qtyDisplay: this.el.querySelector(selectors.qtyDisplay),
+      removeBtn: this.el.querySelector(selectors.remove),
+      addBtn: this.el.querySelector(selectors.add),
+      unavailableText: this.el.querySelector(selectors.unavailableText),
+      availabilityText: this.el.querySelector(selectors.availabilityText),
     };
-
-    return this._elements[key];
   }
 }
