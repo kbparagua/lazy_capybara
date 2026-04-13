@@ -11,7 +11,7 @@ ProductRepository.init(productsJson, { excludeOutOfStock: true });
 
 document.addEventListener('DOMContentLoaded', async () => {
   new OrderForm();
-  new BasketButton();
+  BasketButton.init();
   new BasketView();
   new Loading();  
 
