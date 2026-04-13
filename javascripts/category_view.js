@@ -1,24 +1,21 @@
 import ProductView from "./product_view.js";
 
+const selectors = {
+  template: '.js-category-template',
+  categoryName: '.js-category-name',
+  productList: '.js-product-list'
+};
+
 export default class CategoryView {
-  constructor(category, products) {
-    this.category = category;
-    this.products = products;
-  }
+  static create(category, products) {
+    const el = document.querySelector(selectors.template).content.cloneNode(true);
+    el.querySelector(selectors.categoryName).textContent = category;
 
-  render() {
-    this.categoryElement = document.getElementById('js-category-template').content.cloneNode(true);
-    this.categoryElement.querySelector('.js-category-name').textContent = this.category;
-
-    this.products.forEach(product => {
-      this.#appendProductToList(product);
+    products.forEach(product => {
+      const productView = new ProductView(product);
+      el.querySelector(selectors.productList).appendChild(productView.render());
     });
 
-    return this.categoryElement;
+    return el;
   }
-
-  #appendProductToList(product) {
-    const productView = new ProductView(product);
-    this.categoryElement.querySelector('.js-product-list').appendChild(productView.render());
-  };
 }

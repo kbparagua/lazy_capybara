@@ -36,8 +36,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function renderProducts() {
   ProductRepository.eachByCategory((category, products) => {
-    const categoryView = new CategoryView(category, products);
-    document.getElementById('js-categories').appendChild(categoryView.render());
+    const categoryView = CategoryView.create(category, products);
+    document.getElementById('js-categories').appendChild(categoryView);
   });
 
   const orderForm = document.getElementById('orderForm');
