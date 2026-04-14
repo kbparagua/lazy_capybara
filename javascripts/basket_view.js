@@ -1,7 +1,17 @@
 import EventBus from './event_bus.js';
 import Basket from './basket.js';
 
+const selectors = {
+
+};
+
+const EMPTY_BASKET_HTML = '<p style="padding: 20px; text-align: center; color: #999;">Your basket is empty</p>';
+
 export default class BasketView {
+  static init() {
+
+  }
+
   constructor() {
     this.element = document.getElementById('js-cart-modal');
     this.customerNameInput = document.getElementById('js-customer-name');
@@ -19,7 +29,7 @@ export default class BasketView {
     itemsContainer.innerHTML = '';
   
     if (Basket.count() == 0) {
-      itemsContainer.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">Your basket is empty</p>';
+      itemsContainer.innerHTML = EMPTY_BASKET_HTML;
       return;
     }
   

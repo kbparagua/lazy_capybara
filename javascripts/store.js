@@ -7,9 +7,32 @@ import BasketView from './basket_view.js';
 import OrderForm from './order_form.js';
 import Loading from './loading.js';
 
-ProductRepository.init(productsJson, { excludeOutOfStock: true });
+// product_id: qty
+const testAvailability = {
+  1: 100,
+  2: 0,
+  3: 0,
+};
+
+const encodedAvailability = btoa(JSON.stringify(testAvailability));
+console.log("encodedAvailability", encodedAvailability);
+
+
+
 
 document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const availabilityString = (new URLSearchParams(window.location.search)).get('a');
+    const decodedAvailability = JSON.parse(atob(availabilityString));
+    console.log("decodedAvailability", decodedAvailability);
+
+    ProductRepository.init(productsJson, { excludeOutOfStock: true, availability: decodedAvailability});
+  }
+  catch (error) {
+    console.error("Invalid availability data");
+    return null;
+  }
+
   new OrderForm();
   BasketButton.init();
   new BasketView();
