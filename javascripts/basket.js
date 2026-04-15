@@ -33,6 +33,13 @@ export default {
     EventBus.dispatchEvent(new CustomEvent('basket:updated')); 
   },
 
+  clear() {
+    storage.products = {};
+    EventBus.dispatchEvent(new CustomEvent('basket:updated')); 
+
+    this.persist();
+  },
+
   count() {
     return Object.values(storage.products).reduce((sum, qty) => sum + qty, 0);
   },

@@ -3,6 +3,7 @@ const LAZY_CAPYBARA_URL = 'https://script.google.com/macros/s/AKfycbxWJXAn5WA2Oc
 const PLACE_ORDER_ACTION = 'place_order';
 
 import EventBus from './event_bus.js';
+import Basket from './basket.js';
 
 export default class OrderForm {
   constructor() {
@@ -26,6 +27,7 @@ export default class OrderForm {
 
     // console.log("Received response:", json);
     setTimeout(() => {
+      Basket.clear();
       EventBus.dispatchEvent(new CustomEvent('order:submit:finished'));
     }, 3000)
 
