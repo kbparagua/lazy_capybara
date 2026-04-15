@@ -5,7 +5,7 @@ import Basket from './basket.js';
 import BasketButton from './basket_button.js';
 import BasketView from './basket_view.js';
 import OrderForm from './order_form.js';
-import Loading from './loading.js';
+import Loading from './loader.js';
 
 // product_id: qty
 const testAvailability = {
@@ -22,9 +22,10 @@ console.log("encodedAvailability", encodedAvailability);
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const availabilityString = (new URLSearchParams(window.location.search)).get('a');
-    const decodedAvailability = JSON.parse(atob(availabilityString));
-    console.log("decodedAvailability", decodedAvailability);
+    // const availabilityString = (new URLSearchParams(window.location.search)).get('a');
+    // const decodedAvailability = JSON.parse(atob(availabilityString));
+    // console.log("decodedAvailability", decodedAvailability);
+    const decodedAvailability = {};
 
     ProductRepository.init(productsJson, { excludeOutOfStock: true, availability: decodedAvailability});
   }

@@ -20,12 +20,14 @@ export default class OrderForm {
     const entries = Object.fromEntries(formData);
 
     console.log("Placing order with data:", entries);
-    const stringifiedData = JSON.stringify({ client_secret: CLIENT_SECRET, action: PLACE_ORDER_ACTION, ...entries });
-    const response = await fetch(LAZY_CAPYBARA_URL, { method: 'POST', body: stringifiedData });
-    const json = await response.json();
+    // const stringifiedData = JSON.stringify({ client_secret: CLIENT_SECRET, action: PLACE_ORDER_ACTION, ...entries });
+    // const response = await fetch(LAZY_CAPYBARA_URL, { method: 'POST', body: stringifiedData });
+    // const json = await response.json();
 
-    console.log("Received response:", json);
-    EventBus.dispatchEvent(new CustomEvent('order:submit:finished'));
+    // console.log("Received response:", json);
+    setTimeout(() => {
+      EventBus.dispatchEvent(new CustomEvent('order:submit:finished'));
+    }, 3000)
 
     return true;
   }
