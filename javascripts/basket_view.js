@@ -18,6 +18,12 @@ export default class BasketView {
     this.customerNameInput.addEventListener('input', () => this.#updatePlaceOrderButtonState());
 
     EventBus.addEventListener('basket:updated', () => this.render());
+    EventBus.addEventListener('order:submit:started', () => this.#hide());
+    
+    this.element.querySelector('.js-modal-close').addEventListener('click', (e) => {
+      e.preventDefault();
+      this.#hide();
+    });
   }
 
   render() {
@@ -63,6 +69,10 @@ export default class BasketView {
     });
 
     this.#updatePlaceOrderButtonState();
+  }
+
+  #hide() {
+    this.element.style.display = 'none';
   }
 
   #updateSummary() {
