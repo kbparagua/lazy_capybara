@@ -6,6 +6,7 @@ import BasketButton from './basket_button.js';
 import BasketView from './basket_view.js';
 import OrderForm from './order_form.js';
 import Loading from './loader.js';
+import SuccessModal from './success_modal.js';
 
 // product_id: qty
 const testAvailability = {
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   BasketButton.init();
   new BasketView();
   new Loading();  
+  new SuccessModal();
 
   renderProducts();
 

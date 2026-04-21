@@ -27,7 +27,7 @@ export default class OrderForm {
 
     // console.log("Received response:", json);
     setTimeout(() => {
-      Basket.clear();
+      // Basket.clear();
       EventBus.dispatchEvent(new CustomEvent('order:submit:finished'));
     }, 3000)
 
