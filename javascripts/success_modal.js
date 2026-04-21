@@ -20,6 +20,8 @@ export default class SuccessModal {
 
     if (orderForm) orderForm.style.display = 'none';
     if (stickyFooter) stickyFooter.style.display = 'none';
+
+    Basket.clear();
   }
 
   #renderReceipt() {
