@@ -1,5 +1,6 @@
 import EventBus from './event_bus.js';
 import Basket from './basket.js';
+import { formatCurrency } from './helper.js';
 
 export default class SuccessModal {
   constructor() {
@@ -24,14 +25,14 @@ export default class SuccessModal {
   #renderReceipt() {
     let itemsHtml = '';
     Basket.each((product, qty) => {
-      const itemTotal = (parseFloat(product.price) * qty).toFixed(2);
+      const itemTotal = parseFloat(product.price) * qty;
       itemsHtml += `
         <div class="receipt-row">
           <div class="receipt-col-desc">
             <span class="receipt-item-name">${product.name}</span>
-            <span class="receipt-item-qty">${qty} x P${parseFloat(product.price).toFixed(2)}</span>
+            <span class="receipt-item-qty">${qty} x ${formatCurrency(product.price)}</span>
           </div>
-          <div class="receipt-col-price">P${itemTotal}</div>
+          <div class="receipt-col-price">${formatCurrency(itemTotal)}</div>
         </div>
       `;
     });
@@ -45,7 +46,7 @@ export default class SuccessModal {
         <div class="receipt-footer">
           <div class="receipt-row total">
             <span>TOTAL AMOUNT</span>
-            <span>P${Basket.total().toFixed(2)}</span>
+            <span>${formatCurrency(Basket.total())}</span>
           </div>
         </div>
       </div>

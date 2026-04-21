@@ -1,5 +1,6 @@
 import EventBus from './event_bus.js';
 import Basket from './basket.js';
+import { formatCurrency } from './helper.js';
 
 const selectors = {
 
@@ -49,7 +50,7 @@ export default class BasketView {
 
       itemElement.querySelector('.modal-item-name').textContent = product.name;
       itemElement.querySelector('.modal-item-quantity').textContent = qty;
-      itemElement.querySelector('.modal-item-price').textContent = `P${(product.price * qty).toFixed(2)}`;
+      itemElement.querySelector('.modal-item-price').textContent = formatCurrency(product.price * qty);
       
       // Add event listeners for increment/decrement buttons
       const incrementBtn = itemElement.querySelector('.modal-item-increment-btn');
@@ -89,7 +90,7 @@ export default class BasketView {
     
     const itemText = totalItems === 1 ? '1 item' : `${totalItems} items`;
     totalItemsEl.textContent = itemText;
-    totalAmountEl.textContent = `P${totalAmount.toFixed(2)}`;
+    totalAmountEl.textContent = formatCurrency(totalAmount);
   }
 
   #updatePlaceOrderButtonState() {

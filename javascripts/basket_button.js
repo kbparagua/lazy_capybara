@@ -1,5 +1,6 @@
 import EventBus from './event_bus.js';
 import Basket from './basket.js';
+import { formatCurrency } from './helper.js';
 
 const selectors = {
   itemCount: '.js-basket-item-count',
@@ -15,7 +16,7 @@ export default class BasketButton {
 
     EventBus.addEventListener('basket:updated', () => {
       els.itemCount.textContent = `${Basket.count()} items`;
-      els.totalAmount.textContent = `P${Basket.total().toFixed(2)}`;
+      els.totalAmount.textContent = formatCurrency(Basket.total());
     });
   }
 }
