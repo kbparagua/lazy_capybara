@@ -29,8 +29,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     ProductRepository.init(productsJson, { excludeOutOfStock: true, availability: decodedAvailability});
   }
   catch (error) {
-    console.error("Invalid availability data");
-    return null;
+    console.error("Store initialization failed:", error);
+    window.location.href = 'error.html';
+    return;
   }
 
   new OrderForm();
