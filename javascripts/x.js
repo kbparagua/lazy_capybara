@@ -12,15 +12,18 @@ const config = {};
 const cheatsheet = {};
 data.forEach(item => {
   config[item.category] ||= {};
-  config[item.category][item.sku] = item.available;
+  config[item.category][item.sku] = UNLIMITED;
 
   cheatsheet[item.sku] = `[${item.category}] ${item.name}`
 });
 
-
 document.addEventListener('DOMContentLoaded', async () => {
   const prettyJson = JSON.stringify(config, null, 2);
   document.querySelector('.js-textarea').value = prettyJson;
+
+  console.log("prettyJson");
+  console.log(prettyJson);
+
 
   const skusEl = document.querySelector('.js-skus');
   Object.entries(cheatsheet).forEach(([key, value]) => {
@@ -58,5 +61,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const encodedInventory = btoa(JSON.stringify(finalInventory));
     console.log(encodedInventory);
     
+    const domain = window.location.origin;
+    const url = `${domain}?a=${encodedInventory}`;
+
+    console.log(url);
   }); 
 });

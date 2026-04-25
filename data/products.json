@@ -5,7 +5,6 @@
     "category": "Cookies",
     "description": "lorem ipsum",
     "price": 679,
-    "available": 5,
     "imageUrl": "https://126111794.cdn6.editmysite.com/uploads/1/2/6/1/126111794/TI2VKL2EAEXXFLUCH6E5BYXE.jpeg?width=2400&optimize=medium"
   },
   {
@@ -14,7 +13,6 @@
     "category": "Cookies",
     "description": "lorem ipsum",
     "price": 78,
-    "available": 10,
     "imageUrl": "https://126111794.cdn6.editmysite.com/uploads/1/2/6/1/126111794/TI2VKL2EAEXXFLUCH6E5BYXE.jpeg?width=2400&optimize=medium"
   },
   {
@@ -23,7 +21,6 @@
     "category": "Carrot Loaf",
     "description": "lorem ipsum",
     "price": 78,
-    "available": -1,
     "imageUrl": "https://126111794.cdn6.editmysite.com/uploads/1/2/6/1/126111794/TI2VKL2EAEXXFLUCH6E5BYXE.jpeg?width=2400&optimize=medium"
   },
     {
@@ -32,7 +29,6 @@
     "category": "Carrot Loaf",
     "description": "lorem ipsum",
     "price": 78,
-    "available": 0,
     "imageUrl": "https://126111794.cdn6.editmysite.com/uploads/1/2/6/1/126111794/TI2VKL2EAEXXFLUCH6E5BYXE.jpeg?width=2400&optimize=medium"
   }
 ]
