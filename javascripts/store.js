@@ -9,24 +9,22 @@ import Loading from './loader.js';
 import SuccessModal from './success_modal.js';
 
 // product_id: qty
-const testAvailability = {
-  1: 100,
-  2: 0,
-  3: 0,
-};
+// const testAvailability = {
+//   1: 100,
+//   2: 0,
+//   3: 0,
+// };
 
-const encodedAvailability = btoa(JSON.stringify(testAvailability));
-console.log("encodedAvailability", encodedAvailability);
-
-
+// const encodedAvailability = btoa(JSON.stringify(testAvailability));
+// console.log("encodedAvailability", encodedAvailability);
 
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    // const availabilityString = (new URLSearchParams(window.location.search)).get('a');
-    // const decodedAvailability = JSON.parse(atob(availabilityString));
-    // console.log("decodedAvailability", decodedAvailability);
-    const decodedAvailability = {};
+    const availabilityString = (new URLSearchParams(window.location.search)).get('a');
+    const decodedAvailability = JSON.parse(atob(availabilityString));
+    console.log("decodedAvailability", decodedAvailability);
+    // const decodedAvailability = {};
 
     ProductRepository.init(productsJson, { excludeOutOfStock: true, availability: decodedAvailability});
   }

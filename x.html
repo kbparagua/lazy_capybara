@@ -8,8 +8,15 @@
 </head>
 <body>
   <form id="sourceForm">
-    <textarea id="source" rows="50" cols="100"></textarea>
+    <textarea id="source" class="js-textarea" rows="50" cols="100"></textarea>
+    <span>Use 0 for out of stock. Use -1 for unlimited.</span>
+    <button>Generate</button>
   </form>
-  <script type="module" src="x.js"></script>
+  <div>
+    <h2>Product SKUs</h2>
+    <ul class="js-skus">
+    </ul>
+  </div>
+  <script type="module" src="javascripts/x.js"></script>
 </body>
 </html>
