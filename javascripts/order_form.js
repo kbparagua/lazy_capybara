@@ -17,7 +17,7 @@ export default class OrderForm {
     EventBus.dispatchEvent(new CustomEvent('order:submit:started'));
 
     const customer = this.element.querySelector('[data-customer-name]').value;
-    const items = this.#items();
+    const { items, qtys } = this.#itemsAndQtys();
     const itemCount = Basket.count();
     const totalAmount = Basket.total();
     const verificationCode = Params.verificationCode;
@@ -27,6 +27,7 @@ export default class OrderForm {
       order: {
         customer,
         items,
+        qtys,
         itemCount,
         totalAmount
       }
@@ -49,13 +50,18 @@ export default class OrderForm {
     EventBus.dispatchEvent(new CustomEvent('order:submit:finished'));
   }
 
-  #items() {
+  #itemsAndQtys() {
     const items = [];
+    const qtys = [];
+
     Basket.each((product, qty) => {
-      const item = `${product.sku} x ${qty}`;
-      items.push(item);
+      items.push(product.sku);
+      qtys.push(qty);
     });
 
-    return items.join("\n");
+    return {
+      items: `\n${items.join("\n")}\n`,
+      qtys: `\n${qtys.join("\n")}\n`
+    };
   }
 }
