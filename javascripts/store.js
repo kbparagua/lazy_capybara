@@ -7,22 +7,7 @@ import BasketView from './basket_view.js';
 import OrderForm from './order_form.js';
 import Loading from './loader.js';
 import SuccessModal from './success_modal.js';
-
-const Params = {
-  availability: null,
-  verificationCode: null,
-
-  init: function () {
-    const params = new URLSearchParams(window.location.search);
-    const encodedAvailability = params.get('a');
-    const encodedVerificationCode = params.get('v');
-
-    if (!encodedAvailability || !encodedVerificationCode) throw 'invalid parameters';
-
-    this.availability = JSON.parse(atob(encodedAvailability));
-    this.verificationCode = atob(encodedVerificationCode);
-  }
-};
+import Params from './params.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
