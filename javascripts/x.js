@@ -35,6 +35,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.querySelector('form').addEventListener('submit', (e) => {
     e.preventDefault();
 
+    const verificationCode = document.querySelector('[data-id="verification-code"]').value;
+
     const inventory = {};
     const textarea = document.querySelector('.js-textarea');
     const value = JSON.parse(textarea.value);
@@ -59,10 +61,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log(finalInventory);
     console.log(JSON.stringify(finalInventory));
     const encodedInventory = btoa(JSON.stringify(finalInventory));
+    const encodedVerificationCode = btoa(verificationCode);
+
     console.log(encodedInventory);
     
     const domain = window.location.origin;
-    const url = `${domain}?a=${encodedInventory}`;
+    const url = `${domain}?a=${encodedInventory}&v=${encodedVerificationCode}`;
 
     console.log(url);
   }); 
