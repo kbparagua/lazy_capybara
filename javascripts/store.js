@@ -8,31 +8,35 @@ import OrderForm from './order_form.js';
 import Loading from './loader.js';
 import SuccessModal from './success_modal.js';
 
-// product_id: qty
-// const testAvailability = {
-//   1: 100,
-//   2: 0,
-//   3: 0,
-// };
+const Params = {
+  availability: null,
+  verificationCode: null,
 
-// const encodedAvailability = btoa(JSON.stringify(testAvailability));
-// console.log("encodedAvailability", encodedAvailability);
+  init: function () {
+    const params = new URLSearchParams(window.location.search);
+    const encodedAvailability = params.get('a');
+    const encodedVerificationCode = params.get('v');
 
+    if (!encodedAvailability || !encodedVerificationCode) throw 'invalid parameters';
+
+    this.availability = JSON.parse(atob(encodedAvailability));
+    this.verificationCode = atob(encodedVerificationCode);
+  }
+};
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const availabilityString = (new URLSearchParams(window.location.search)).get('a');
-    const decodedAvailability = JSON.parse(atob(availabilityString));
-    console.log("decodedAvailability", decodedAvailability);
-    // const decodedAvailability = {};
-
-    ProductRepository.init(productsJson, { excludeOutOfStock: true, availability: decodedAvailability});
+    Params.init();
   }
   catch (error) {
-    console.error("Store initialization failed:", error);
     window.location.href = 'error.html';
     return;
   }
+
+  ProductRepository.init(
+    productsJson,
+    { excludeOutOfStock: true, availability: Params.availability }
+  );
 
   new OrderForm();
   BasketButton.init();
